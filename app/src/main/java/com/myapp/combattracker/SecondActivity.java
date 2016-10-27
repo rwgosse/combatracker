@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.myapp.espressotesting.R;
+import com.myapp.combattracker.*;
 
 public class SecondActivity extends Activity{
     @Override

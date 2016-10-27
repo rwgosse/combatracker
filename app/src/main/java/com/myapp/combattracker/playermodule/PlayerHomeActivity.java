@@ -1,22 +1,26 @@
-package com.myapp.combattracker;
+package com.myapp.combattracker.playermodule;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import com.myapp.combattracker.database.SQLHelper;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.content.Intent;
 import android.view.View;
-import android.widget.*;
+import com.myapp.combattracker.*;
+import com.myapp.combattracker.models.*;
 import java.util.*;
 
 
-import com.myapp.combattracker.EditCharacterActivity;
-import com.myapp.espressotesting.R;
+
 
 public class PlayerHomeActivity extends AppCompatActivity {
 
     SQLHelper sqlHelper;
     TextView textTemp;
     Spinner spinner;
-    List<StudentsModel> list = new ArrayList<StudentsModel>();
+    List<CharacterModel> list = new ArrayList<CharacterModel>();
 
 
     @Override
@@ -25,12 +29,9 @@ public class PlayerHomeActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_home);
+
         sqlHelper = new SQLHelper(getApplicationContext());
 
-        StudentsModel student1 = new StudentsModel(1, "Reggie", "222-2222");
-        StudentsModel student2 = new StudentsModel(2, "Frank", "333-2222");
-        sqlHelper.addStudentDetail(student1);
-        sqlHelper.addStudentDetail(student2);
 
 
         populate_character_choice();
@@ -56,23 +57,23 @@ public class PlayerHomeActivity extends AppCompatActivity {
 
 
         // Spinner Drop down elements
-        List<String> categories = new ArrayList<String>();
-        categories.add("Business Services");
-        categories.add("Computers");
-        categories.add("Education");
-        categories.add("Personal");
-        categories.add("Travel");
+        List<String> characters = new ArrayList<String>();
+    /*        categories.add("Business Services");
+            categories.add("Computers");
+            categories.add("Education");
+            categories.add("Personal");
+            categories.add("Travel");*/
 
-        list = sqlHelper.getAllStudentsList();
+        list = sqlHelper.getAllCharactersList();
 
-        for(StudentsModel sm : list){
-            categories.add(sm.name);
+        for(CharacterModel character : list){
+            characters.add(character.name + " " + character.getClassName());
 
         }
 
 
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, characters);
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.myapp.espressotesting">
+    package="com.myapp.combattracker">
 
     <application
         android:allowBackup="true"
@@ -16,9 +16,9 @@
             </intent-filter>
         </activity>
         <activity android:name="com.myapp.combattracker.SecondActivity" />
-        <activity android:name="com.myapp.combattracker.PlayerHomeActivity" />
-        <activity android:name="com.myapp.combattracker.DmHomeActivity" />
-        <activity android:name="com.myapp.combattracker.EditCharacterActivity"></activity>
+        <activity android:name="com.myapp.combattracker.dmmodule.DmHomeActivity" />
+        <activity android:name="com.myapp.combattracker.playermodule.EditCharacterActivity" />
+        <activity android:name="com.myapp.combattracker.playermodule.PlayerHomeActivity"></activity>
     </application>
 
 </manifest>

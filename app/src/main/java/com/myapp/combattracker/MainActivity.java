@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 
-import com.myapp.espressotesting.R;
+import com.myapp.combattracker.dmmodule.DmHomeActivity;
+import com.myapp.combattracker.playermodule.PlayerHomeActivity;
+import com.myapp.combattracker.playermodule.EditCharacterActivity;
+
 
 
 

@@ -5,7 +5,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.myapp.combattracker.MainActivity;
-import com.myapp.espressotesting.R;
+import com.myapp.combattracker.R;
 
 import org.junit.Rule;
 import org.junit.Test;
