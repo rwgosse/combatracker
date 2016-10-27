@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Combat Tracker</string>
+    <string name="edit_message">Enter a message</string>
+    <string name="button_send">Send</string>
+    <string name="button_player">Player</string>
+    <string name="button_dungeon_master">Dungeon Master</string>
+    <string name="text_characters">Characters</string>
+    <string name="button_new_character">Create New Character</string>
+    <string name="button_monsters">Manage Monsters</string>
+    <string name="button_encounter">Encounters</string>
+
+
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+</resources>
