@@ -1,4 +1,4 @@
-package com.myapp.combattrackertesting;
+package com.myapp.espressotesting;
 
 import org.junit.Test;
 

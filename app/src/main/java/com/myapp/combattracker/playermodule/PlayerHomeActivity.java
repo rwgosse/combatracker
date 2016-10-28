@@ -30,6 +30,8 @@ public class PlayerHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_home);
 
+
+
         sqlHelper = new SQLHelper(getApplicationContext());
 
 
@@ -45,7 +47,6 @@ public class PlayerHomeActivity extends AppCompatActivity {
 
     public void click_new(View view) {
         Intent myIntent = new Intent(this, EditCharacterActivity.class);
-
         startActivity(myIntent);
     }
 
@@ -58,19 +59,11 @@ public class PlayerHomeActivity extends AppCompatActivity {
 
         // Spinner Drop down elements
         List<String> characters = new ArrayList<String>();
-    /*        categories.add("Business Services");
-            categories.add("Computers");
-            categories.add("Education");
-            categories.add("Personal");
-            categories.add("Travel");*/
-
         list = sqlHelper.getAllCharactersList();
 
         for(CharacterModel character : list){
             characters.add(character.name + " " + character.getClassName());
-
         }
-
 
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, characters);

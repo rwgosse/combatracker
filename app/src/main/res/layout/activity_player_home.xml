@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="horizontal">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,7 +23,14 @@
         android:id="@+id/spinner_character_choice"
         android:layout_below="@id/text_characters" />
 
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/load_character"
+        android:id="@+id/edit_character_button"
+        android:layout_below="@id/spinner_character_choice"
+        android:onClick="click_new"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -33,12 +41,7 @@
         android:layout_alignParentBottom="true"
         android:onClick="click_new"/>
 
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/new_character_button"
-        android:layout_alignEnd="@+id/text_characters"
-        android:layout_marginBottom="170dp"
-        android:id="@+id/textTemp" />
+
+
+
 </RelativeLayout>

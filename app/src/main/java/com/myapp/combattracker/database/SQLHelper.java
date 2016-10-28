@@ -98,8 +98,8 @@ public class SQLHelper extends SQLiteOpenHelper {
         addCharacterClass(db, new CharacterClassModel("Barbarian"));
         addCharacterClass(db, new CharacterClassModel("Monk"));
 
-        addCharacter(db, new CharacterModel("Dave", "Big Guy", getCharacterClass(db, "Fighter")));
-        addCharacter(db, new CharacterModel("Ed", "Magic Guy", getCharacterClass(db, "Wizard")));
+        addCharacter(db, new CharacterModel("Dave", "Big Guy", getCharacterClass(db, "Fighter"), "Lawful Good"));
+        addCharacter(db, new CharacterModel("Ed", "Magic Guy", getCharacterClass(db, "Wizard"), "Lawful Good"));
 
     }
 
@@ -272,10 +272,10 @@ public class SQLHelper extends SQLiteOpenHelper {
             c.moveToFirst();
 
         CharacterClassModel characterClassModel = new CharacterClassModel();
-        characterClassModel.id = c.getInt(c.getColumnIndex(CLASS_ID));
+        characterClassModel.id = c.getInt(c != null ? c.getColumnIndex(CLASS_ID) : 0);
         characterClassModel.name = c.getString(c.getColumnIndex(CHARACTER_CLASS_NAME));
 
-
+        c.close();
         return characterClassModel;
     }
 
@@ -333,7 +333,7 @@ public class SQLHelper extends SQLiteOpenHelper {
                 charactersArrayList.add(character);
             } while (c.moveToNext());
         }
-
+        c.close();
         return charactersArrayList;
     }
 }
