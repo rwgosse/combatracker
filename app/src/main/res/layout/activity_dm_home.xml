@@ -10,4 +10,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.myapp.combattracker.dmmodule.DmHomeActivity">
 
+    <TextView
+        android:text="NOT YET IMPLEMENTED"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="42dp"
+        android:id="@+id/textView" />
 </RelativeLayout>

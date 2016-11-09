@@ -15,7 +15,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.myapp.combattracker.SecondActivity" />
         <activity android:name="com.myapp.combattracker.dmmodule.DmHomeActivity" />
         <activity android:name="com.myapp.combattracker.playermodule.EditCharacterActivity" />
         <activity android:name="com.myapp.combattracker.playermodule.PlayerHomeActivity"></activity>

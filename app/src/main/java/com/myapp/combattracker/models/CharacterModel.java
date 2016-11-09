@@ -1,5 +1,7 @@
 package com.myapp.combattracker.models;
 
+import java.util.ArrayList;
+
 /**
  * Created by Richard on 2016-10-26.
  */
@@ -10,7 +12,8 @@ public class CharacterModel {
     public int level;
     public int xp;
     public CharacterClassModel characterClassModel;
-    public String alignment;
+    public Alignment alignment;
+    public String text;
 
     public int ac;
     public int str;
@@ -20,30 +23,81 @@ public class CharacterModel {
     public int intel;
     public int chr;
 
+    public ArrayList<ItemModel> inventory;
 
-    public String text;
 
 
-    public CharacterModel(String name, String text, CharacterClassModel characterClassModel, String alignment) {
+
+    // constructor for new characters, starting at level 1
+    public CharacterModel(String name, String text, CharacterClassModel characterClassModel, Alignment alignment) {
         // TODO Auto-generated constructor stub
-        //this.id = id;
+
         this.name = name;
         this.text = text;
-        this.level = 0;
-        this.xp = 0;
         this.characterClassModel = characterClassModel;
         this.alignment = alignment;
+        this.level = 1;
+        this.xp = 0;
+        this.inventory = new ArrayList<ItemModel>();
 
 
 
     }
+
+
+    // constructor for existing characters, such as those in the database
+    public CharacterModel(int id, String name, String text, CharacterClassModel characterClassModel, Alignment alignment, int level, int xp) {
+        // TODO Auto-generated constructor stub
+        this.id = id;
+        this.name = name;
+        this.text = text;
+        this.characterClassModel = characterClassModel;
+        this.alignment = alignment;
+        this.level = level;
+        this.xp = xp;
+        this.inventory = new ArrayList<ItemModel>();
+
+
+    }
     public CharacterModel(){
+        this.inventory = new ArrayList<ItemModel>();
 
     }
 
     public String getClassName() {
         return characterClassModel.name;
     }
+
+    @Override
+    public String toString() {
+        return this.name + " " + this.characterClassModel.name + " " + "(" + this.level + ")";
+    }
+
+    public void addItem(ItemModel item) {
+        if (item != null) {
+            inventory.add(item);
+        }
+    }
+
+    public void removeItem(int itemID){
+        //not yet implemented
+    }
+
+    public ArrayList<WeaponModel> getWeapons() {
+        ArrayList<WeaponModel> weapons = new ArrayList<WeaponModel>();
+        for (ItemModel item : inventory) {
+            System.out.println(item.getClass());
+            if (item instanceof WeaponModel) {
+
+                weapons.add((WeaponModel) item);
+            }
+
+        }
+        return weapons;
+
+    }
+
+
 
 
 }

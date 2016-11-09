@@ -40,14 +40,23 @@ public class PlayerHomeActivity extends AppCompatActivity {
 
 
 
-        textTemp = (TextView) findViewById(R.id.textTemp);
 
     }
 
 
     public void click_new(View view) {
         Intent myIntent = new Intent(this, EditCharacterActivity.class);
+
         startActivity(myIntent);
+    }
+
+    public void click_load(View view) {
+        Intent myIntent = new Intent(this, EditCharacterActivity.class);
+
+        CharacterModel selected = (CharacterModel) spinner.getSelectedItem();
+
+        myIntent.putExtra("character_id", selected.id);
+        startActivity((myIntent));
     }
 
 
@@ -58,15 +67,15 @@ public class PlayerHomeActivity extends AppCompatActivity {
 
 
         // Spinner Drop down elements
-        List<String> characters = new ArrayList<String>();
+        List<CharacterModel> characters = new ArrayList<CharacterModel>();
         list = sqlHelper.getAllCharactersList();
 
         for(CharacterModel character : list){
-            characters.add(character.name + " " + character.getClassName());
+            characters.add(character);
         }
 
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, characters);
+        ArrayAdapter<CharacterModel> dataAdapter = new ArrayAdapter<CharacterModel>(this, android.R.layout.simple_spinner_item, characters);
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
