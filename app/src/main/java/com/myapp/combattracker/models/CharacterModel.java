@@ -28,8 +28,6 @@ public class CharacterModel {
     public ArrayList<ItemModel> inventory;
 
 
-
-
     // constructor for new characters, starting at level 1
     public CharacterModel(String name, String text, CharacterClassModel characterClassModel, Alignment alignment) {
         // TODO Auto-generated constructor stub
@@ -52,17 +50,12 @@ public class CharacterModel {
         this.ac = 10 + PlayerHelper.getModifier(this.dex);
 
 
-
-
-
-
-
     }
 
 
     // constructor for existing characters, such as those in the database
     public CharacterModel(int id, String name, String text, CharacterClassModel characterClassModel, Alignment alignment, int level, int xp,
-                            int ac, int str, int con, int dex, int wis, int intel, int chr) {
+                          int ac, int str, int con, int dex, int wis, int intel, int chr) {
         // TODO Auto-generated constructor stub
         this.id = id;
         this.name = name;
@@ -78,7 +71,6 @@ public class CharacterModel {
         this.wis = wis;
         this.intel = intel;
         this.chr = chr;
-
 
 
         this.inventory = new ArrayList<ItemModel>();
@@ -104,13 +96,12 @@ public class CharacterModel {
         this.chr = chr;
 
 
-
         this.inventory = new ArrayList<ItemModel>();
 
 
     }
 
-    public CharacterModel(){
+    public CharacterModel() {
         this.inventory = new ArrayList<ItemModel>();
 
     }
@@ -130,7 +121,7 @@ public class CharacterModel {
         }
     }
 
-    public void removeItem(int itemID){
+    public void removeItem(int itemID) {
         //not yet implemented
     }
 
@@ -149,14 +140,10 @@ public class CharacterModel {
     }
 
 
-
-
     public int getUnarmedStrikeDMG() {
         return 1 + PlayerHelper.getModifier(str);
 
     }
-
-
 
 
 }

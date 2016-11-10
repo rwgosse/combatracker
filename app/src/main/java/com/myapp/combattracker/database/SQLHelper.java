@@ -5,9 +5,6 @@ package com.myapp.combattracker.database;
  * Database Helper Call used to create , upgrade database , create table and perform C.R.U.D.  operations
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -15,17 +12,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.myapp.combattracker.models.*;
+import com.myapp.combattracker.models.Alignment;
+import com.myapp.combattracker.models.CharacterClassModel;
+import com.myapp.combattracker.models.CharacterModel;
+import com.myapp.combattracker.models.ItemModel;
+import com.myapp.combattracker.models.WeaponModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQLHelper extends SQLiteOpenHelper {
 
     // Current version of database
     private static final int DATABASE_VERSION = 14;
-    // Database Name
-    public static String DATABASE_NAME = "combat_database";
-    public static String TAG = "tag";
-    private SQLiteDatabase db;
-
     // Characters Table
     private static final String TABLE_CHARACTERS = "characters";
     private static final String CHARACTER_ID = "id";
@@ -58,7 +57,6 @@ public class SQLHelper extends SQLiteOpenHelper {
             + CHARACTER_WIS + " INTEGER,"
             + CHARACTER_INT + " INTEGER,"
             + CHARACTER_CHR + " INTEGER);";
-
     // Character Class Table
     private static final String TABLE_CHARACTER_CLASSES = "characterclasses";
     private static final String CLASS_ID = "id";
@@ -67,7 +65,6 @@ public class SQLHelper extends SQLiteOpenHelper {
             + TABLE_CHARACTER_CLASSES + "("
             + CLASS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + CHARACTER_CLASS_NAME + " TEXT);";
-
     // Alignment Table
     private static final String TABLE_ALIGNMENTS = "alignments";
     private static final String ALIGNMENT_ID = "id";
@@ -76,12 +73,11 @@ public class SQLHelper extends SQLiteOpenHelper {
             + TABLE_ALIGNMENTS + "("
             + ALIGNMENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + ALIGNMENT_NAME + " TEXT);";
-
-    // Items Table
-
     private static final String TABLE_ITEMS = "items";
     private static final String ITEM_ID = "id";
     private static final String ITEM_TYPE = "itemtype";
+
+    // Items Table
     private static final String OWNER_ID = "ownerid";
     private static final String ITEM_NAME = "name";
     private static final String ITEM_TEXT = "text";
@@ -98,7 +94,10 @@ public class SQLHelper extends SQLiteOpenHelper {
             + WEAPON_DAMAGE + " TEXT,"
             + WEAPON_ATTACK + " INTEGER,"
             + WEAPON_TYPE + " TEXT);";
-
+    // Database Name
+    public static String DATABASE_NAME = "combat_database";
+    public static String TAG = "tag";
+    private SQLiteDatabase db;
 
 
     // Abilities Table
@@ -112,11 +111,6 @@ public class SQLHelper extends SQLiteOpenHelper {
     // Weapons Table
 
 
-
-
-
-
-
     public SQLHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -128,7 +122,6 @@ public class SQLHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         this.db = db;
-
 
 
         // create all tables
@@ -154,9 +147,9 @@ public class SQLHelper extends SQLiteOpenHelper {
         addAlignment(db, new Alignment("Neutral Evil"));
         addAlignment(db, new Alignment("Chaotic Evil"));
 
-        addCharacter(new CharacterModel("Bob", "Little Guy", getCharacterClass(db,"Rogue"), getAlignment(1)));
-        addCharacter(new CharacterModel("Dave", "Big Guy", getCharacterClass(db,"Fighter"), getAlignment(1)));
-        addCharacter(new CharacterModel("Ed", "Magic Guy", getCharacterClass(db,"Wizard"), getAlignment(2)));
+        addCharacter(new CharacterModel("Bob", "Little Guy", getCharacterClass(db, "Rogue"), getAlignment(1)));
+        addCharacter(new CharacterModel("Dave", "Big Guy", getCharacterClass(db, "Fighter"), getAlignment(1)));
+        addCharacter(new CharacterModel("Ed", "Magic Guy", getCharacterClass(db, "Wizard"), getAlignment(2)));
 
         addItem(db, new ItemModel("Torch", "Lights Up"));
         addItem(db, new ItemModel(0, "Bag of Holding", "Contains Items"));
@@ -189,7 +182,6 @@ public class SQLHelper extends SQLiteOpenHelper {
 
 
     /**
-     *
      * This method is used to add classes to the character classes Table
      *
      * @param characterClass
@@ -210,13 +202,12 @@ public class SQLHelper extends SQLiteOpenHelper {
     }
 
     /**
-     *
      * This method is used to add classes to the character classes Table
      *
      * @param alignment
      * @return
      */
-    public long addAlignment(SQLiteDatabase db,  Alignment alignment) {
+    public long addAlignment(SQLiteDatabase db, Alignment alignment) {
         //SQLiteDatabase db = this.getWritableDatabase();
 
         // Creating content values
@@ -244,8 +235,7 @@ public class SQLHelper extends SQLiteOpenHelper {
             values.put(WEAPON_ATTACK, ((WeaponModel) item).atk);
             values.put(WEAPON_DAMAGE, ((WeaponModel) item).dmg);
             values.put(WEAPON_TYPE, ((WeaponModel) item).dmgType);
-        }
-        else values.put(ITEM_TYPE, "item");
+        } else values.put(ITEM_TYPE, "item");
         // insert row in table
 
         long insert = db.insert(TABLE_ITEMS, null, values);
@@ -254,13 +244,14 @@ public class SQLHelper extends SQLiteOpenHelper {
     }
 
     //public ItemModel getItem(int itemId) {
-        //not yet implemented
-  //  }
+    //not yet implemented
+    //  }
 
     /**
      * Used to get a particular character class
-     *
+     * <p>
      * * @param name
+     *
      * @return
      */
     public CharacterClassModel getCharacterClass(SQLiteDatabase db, String name) {
@@ -324,7 +315,6 @@ public class SQLHelper extends SQLiteOpenHelper {
     }
 
     /**
-     *
      * This method is used to add classes to the character classes Table
      *
      * @param character
@@ -399,7 +389,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     }
 
     public CharacterModel getCharacter(int id) {
-       db = this.getReadableDatabase();
+        db = this.getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_CHARACTERS + " WHERE " + CHARACTER_ID + " = '" + id + "'";
         Log.d(TAG, selectQuery);
         Cursor c = db.rawQuery(selectQuery, null);
@@ -440,8 +430,7 @@ public class SQLHelper extends SQLiteOpenHelper {
                     weapon.dmg = w.getString(w.getColumnIndex(WEAPON_DAMAGE));
                     weapon.dmgType = w.getString(w.getColumnIndex(WEAPON_TYPE));
                     character.addItem(weapon);
-                }
-                else {
+                } else {
                     ItemModel item = new ItemModel();
                     item.id = w.getInt(w.getColumnIndex(ITEM_ID));
                     item.ownerid = w.getInt(w.getColumnIndex(OWNER_ID));
@@ -509,7 +498,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     public long updateCharacter(CharacterModel character) {
         SQLiteDatabase db = this.getReadableDatabase();
-        ContentValues values= new ContentValues();
+        ContentValues values = new ContentValues();
         values.put(CHARACTER_NAME, character.name);
         values.put(CHARACTER_TEXT, character.text);
         values.put(CHARACTER_LEVEL, character.level);
@@ -523,7 +512,6 @@ public class SQLHelper extends SQLiteOpenHelper {
         values.put(CHARACTER_WIS, character.wis);
         values.put(CHARACTER_INT, character.intel);
         values.put(CHARACTER_CHR, character.chr);
-
-        return db.update(TABLE_CHARACTERS, values, "id="+character.id, null);
+        return db.update(TABLE_CHARACTERS, values, "id=" + character.id, null);
     }
 }

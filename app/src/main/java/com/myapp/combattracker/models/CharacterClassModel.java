@@ -18,10 +18,10 @@ public class CharacterClassModel {
     }
 
 
-public CharacterClassModel(int id, String name) {
-    this.id = id;
-    this.name = name;
-}
+    public CharacterClassModel(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
 
     @Override

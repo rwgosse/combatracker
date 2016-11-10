@@ -13,22 +13,21 @@ public final class PlayerHelper {
 
         while (count < d) {
             sum += (int) (Math.random() * n + 1);
-            count ++;
+            count++;
         }
-        System.out.println("diceroll: " + d + "d" + n + " = " + sum );
+        System.out.println("diceroll: " + d + "d" + n + " = " + sum);
         return sum;
     }
 
     public static int generateStat() {
-        int roll1 = roll(1,6);
-        int roll2 = roll(1,6);
-        int roll3 = roll(1,6);
-        int roll4 = roll(1,6);
+        int roll1 = roll(1, 6);
+        int roll2 = roll(1, 6);
+        int roll3 = roll(1, 6);
+        int roll4 = roll(1, 6);
 
         int sum = roll1 + roll2 + roll3 + roll4;
         sum = sum - Math.min(roll1, Math.min(roll2, Math.min(roll3, roll4)));
         return sum;
-
 
 
     }
@@ -36,11 +35,10 @@ public final class PlayerHelper {
 
     public static int getModifier(int stat) {
         int i = stat - 10;
-        i = i/2;
+        i = i / 2;
         return (int) Math.floor(i);
 
     }
-
 
 
 }

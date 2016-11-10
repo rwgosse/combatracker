@@ -11,7 +11,6 @@
     tools:context="com.myapp.combattracker.playermodule.EditCharacterActivity">
 
 
-
     <TextView
         android:text="Name:"
         android:layout_width="wrap_content"
@@ -19,9 +18,7 @@
         android:layout_alignParentTop="true"
         android:id="@+id/textView_name"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="15dip"
-    />
-
+        android:layout_marginBottom="15dip" />
 
 
     <TextView
@@ -30,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView_name"
         android:id="@+id/textView_class"
-        android:layout_marginBottom="15dip"/>
+        android:layout_marginBottom="15dip" />
 
     <TextView
         android:text="Level"
@@ -38,7 +35,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView_level"
         android:layout_below="@+id/textView_class"
-        android:layout_marginBottom="15dip"/>
+        android:layout_marginBottom="15dip" />
 
     <TextView
         android:text="Experience:"
@@ -47,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_below="@+id/textView_level"
 
-        android:layout_marginBottom="15dip"/>
+        android:layout_marginBottom="15dip" />
 
     <TextView
         android:text="Alignment:"
@@ -55,11 +52,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView_align"
         android:layout_below="@+id/textView_xp"
-        android:layout_marginBottom="25dip"/>
+        android:layout_marginBottom="25dip" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_ac"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_align">
 
     <TextView
         android:text="AC"
@@ -68,7 +71,8 @@
         android:layout_below="@+id/textView_align"
         android:id="@+id/textView_ac"
         android:layout_marginLeft="10dp"
-        />
+        android:translationX="15dp"
+        android:translationY="5dp" />
 
     <TextView
         android:text="15"
@@ -77,15 +81,36 @@
         android:layout_below="@+id/textView_ac"
         android:id="@+id/textView_acbox"
         android:layout_marginBottom="15dip"
-        android:textSize="35dp"/>
+        android:textSize="35dp"
+        android:translationX="15dp"
+        android:translationY="5dp" />
 
+        <ImageView
+            android:id="@+id/flag"
+
+            android:scaleType="centerInside"
+            android:src="@drawable/shield"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:layout_alignParentStart="true"
+
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:translationX="-5dp" />
+
+        </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_str"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_ac">
     <TextView
         android:text="STR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView_acbox"
         android:id="@+id/textView_str"
-        android:layout_marginBottom="5dip"/>
+        android:layout_marginBottom="5dip" />
 
     <TextView
         android:text="10"
@@ -93,16 +118,24 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView_str"
         android:id="@+id/textView_strstat"
-        android:layout_marginBottom="5dip"/>
+        android:layout_marginBottom="5dip"
+        android:translationX="5dp"
+        />
+</RelativeLayout>
 
-
+    <RelativeLayout
+        android:id="@+id/layout_con"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_str">
     <TextView
         android:text="CON"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView_strstat"
+
         android:id="@+id/textView_con"
-        android:layout_marginBottom="5dip"/>
+        android:layout_marginBottom="5dip" />
+
 
     <TextView
         android:text="10"
@@ -110,15 +143,22 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView_con"
         android:id="@+id/textView_constat"
-        android:layout_marginBottom="5dip"/>
+        android:layout_marginBottom="5dip"
+        android:translationX="5dp" />
+</RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/layout_dex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_con">
     <TextView
         android:text="DEX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView_constat"
         android:id="@+id/textView_dex"
-        android:layout_marginBottom="5dip"/>
+        android:layout_marginBottom="5dip" />
 
     <TextView
         android:text="10"
@@ -126,15 +166,22 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView_dex"
         android:id="@+id/textView_dexstat"
-        android:layout_marginBottom="5dip"/>
+        android:layout_marginBottom="5dip"
+        android:translationX="5dp" />
+        </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/layout_wiz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_dex">
+
 
     <TextView
         android:text="WIZ"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView_dexstat"
         android:id="@+id/textView_wiz"
-        android:layout_marginBottom="5dip"/>
+        android:layout_marginBottom="5dip" />
 
     <TextView
         android:text="10"
@@ -142,15 +189,23 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView_wiz"
         android:id="@+id/textView_wizstat"
-        android:layout_marginBottom="5dip"/>
+        android:layout_marginBottom="5dip"
+        android:translationX="5dp" />
+        </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_int"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_wiz">
 
     <TextView
         android:text="INT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView_wizstat"
+
         android:id="@+id/textView_int"
-        android:layout_marginBottom="5dip"/>
+        android:layout_marginBottom="5dip" />
 
     <TextView
         android:text="10"
@@ -158,7 +213,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView_int"
         android:id="@+id/textView_intstat"
-        android:layout_marginBottom="5dip"/>
+        android:layout_marginBottom="5dip"
+        android:translationX="5dp" />
+        </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/layout_chr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_int">
 
 
     <TextView
@@ -166,9 +228,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView_chr"
-        android:layout_below="@+id/textView_intstat"
-        android:layout_marginBottom="5dip"/>
 
+        android:layout_marginBottom="5dip" />
 
 
     <TextView
@@ -177,9 +238,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView_chrstat"
         android:layout_below="@+id/textView_chr"
-        android:layout_marginBottom="5dip"/>
-
-
+        android:layout_marginBottom="5dip"
+        android:translationX="5dp" />
+        </RelativeLayout>
 
 
     <EditText
@@ -190,7 +251,7 @@
         android:id="@+id/editText_name"
         android:text="name"
         android:layout_toRightOf="@id/textView_xp"
-        android:layout_alignBaseline="@id/textView_name"/>
+        android:layout_alignBaseline="@id/textView_name" />
 
     <Spinner
         android:layout_width="match_parent"
@@ -207,8 +268,7 @@
         android:id="@+id/editText_xp"
         android:text="1234"
         android:layout_toRightOf="@+id/textView_xp"
-        android:layout_alignBaseline="@id/textView_xp"
-      />
+        android:layout_alignBaseline="@id/textView_xp" />
 
     <Spinner
         android:layout_width="match_parent"
@@ -216,7 +276,6 @@
         android:layout_toRightOf="@+id/textView_xp"
         android:layout_alignBaseline="@id/textView_align"
         android:id="@+id/spinner_align" />
-
 
 
     <EditText
@@ -235,40 +294,41 @@
         android:layout_height="wrap_content"
         android:id="@+id/button_save"
         android:text="Save"
-        android:layout_below="@+id/textView_chr"
+        android:layout_below="@+id/layout_attacks"
         android:layout_centerHorizontal="true"
-        android:onClick="click_save"/>
-
+        android:onClick="click_save" />
 
 
     <RelativeLayout
-        android:layout_toRightOf="@+id/textView_acbox"
-        android:layout_alignBaseline="@+id/textView_ac"
+        android:id="@+id/layout_attacks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_margin="20dip"
+       android:layout_toRightOf="@id/layout_ac"
         android:background="@drawable/customborder"
+android:layout_below="@id/spinner_align"
 
+        android:translationX="10dp"
+        android:layout_marginLeft="25dip"
+        android:layout_marginRight="25dip"
+        android:layout_marginTop="25dip"
+        android:layout_marginBottom="25dip"
+        android:layout_toEndOf="@+id/layout_ac">
 
-        >
         <TextView
             android:text="ATTACKS:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView_attacks"
-            android:layout_margin="10dip"
-            />
+            android:layout_margin="10dip" />
 
         <TextView
-             android:text="NAME   ATK    DAMAGE      "
-              android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:id="@+id/textView_atkheader"
+            android:text="NAME   ATK    DAMAGE      "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_atkheader"
             android:layout_below="@id/textView_attacks"
-           android:layout_marginLeft="10dip"
-            android:layout_marginBottom="1dip"
-        />
+            android:layout_marginLeft="10dip"
+            android:layout_marginBottom="1dip" />
 
 
         <ListView
@@ -277,13 +337,11 @@
             android:id="@+id/listView_attacks"
             android:layout_below="@id/textView_atkheader"
             android:clickable="false"
-            android:contextClickable="false">
-        </ListView>
-
-
-
+            android:contextClickable="false"></ListView>
 
 
     </RelativeLayout>
+
+
 
 </RelativeLayout>

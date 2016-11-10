@@ -19,7 +19,7 @@ public class MonsterModel {
     public int chr;
 
 
-    public MonsterModel(){
+    public MonsterModel() {
 
     }
 

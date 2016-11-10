@@ -1,27 +1,30 @@
 package com.myapp.combattracker.playermodule;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ListView;
-import android.widget.EditText;
-import android.widget.Button;
-import android.content.DialogInterface;
-import android.app.AlertDialog;
 
 import com.myapp.combattracker.Helpers.PlayerHelper;
+import com.myapp.combattracker.R;
 import com.myapp.combattracker.database.SQLHelper;
-import com.myapp.combattracker.*;
+import com.myapp.combattracker.models.Alignment;
+import com.myapp.combattracker.models.CharacterClassModel;
+import com.myapp.combattracker.models.CharacterModel;
+import com.myapp.combattracker.models.WeaponModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.myapp.combattracker.models.*;
 
 public class EditCharacterActivity extends AppCompatActivity {
 
@@ -60,8 +63,7 @@ public class EditCharacterActivity extends AppCompatActivity {
         if (mIntent.hasExtra("character_id")) {
             isNew = false;
             loadCharacter();
-        }
-        else {
+        } else {
             newCharacter();
         }
 
@@ -75,13 +77,13 @@ public class EditCharacterActivity extends AppCompatActivity {
         text_xp.setText(String.valueOf(0));
         //spin_align.setSelection(character.alignment.id);
         //populate_attack_listview(character);
-        textView_acbox.setText(String.valueOf(PlayerHelper.roll(3,6)));
-        textView_strstat.setText(String.valueOf(PlayerHelper.roll(3,6)));
-        textView_dexstat.setText(String.valueOf(PlayerHelper.roll(3,6)));
-        textView_constat.setText(String.valueOf(PlayerHelper.roll(3,6)));
-        textView_wisstat.setText(String.valueOf(PlayerHelper.roll(3,6)));
-        textView_intstat.setText(String.valueOf(PlayerHelper.roll(3,6)));
-        textView_chrstat.setText(String.valueOf(PlayerHelper.roll(3,6)));
+        textView_acbox.setText(String.valueOf(PlayerHelper.roll(3, 6)));
+        textView_strstat.setText(String.valueOf(PlayerHelper.roll(3, 6)));
+        textView_dexstat.setText(String.valueOf(PlayerHelper.roll(3, 6)));
+        textView_constat.setText(String.valueOf(PlayerHelper.roll(3, 6)));
+        textView_wisstat.setText(String.valueOf(PlayerHelper.roll(3, 6)));
+        textView_intstat.setText(String.valueOf(PlayerHelper.roll(3, 6)));
+        textView_chrstat.setText(String.valueOf(PlayerHelper.roll(3, 6)));
         populate_attack_listview();
     }
 
@@ -126,7 +128,7 @@ public class EditCharacterActivity extends AppCompatActivity {
         List<Alignment> alignments = new ArrayList<Alignment>();
         List<Alignment> list = sqlHelper.getAllAlignList();
 
-        for(Alignment alignment : list){
+        for (Alignment alignment : list) {
             alignments.add(alignment);
         }
 
@@ -145,7 +147,7 @@ public class EditCharacterActivity extends AppCompatActivity {
         List<CharacterClassModel> character_classes = new ArrayList<CharacterClassModel>();
         List<CharacterClassModel> list = sqlHelper.getAllClassList();
 
-        for(CharacterClassModel character_class : list){
+        for (CharacterClassModel character_class : list) {
             character_classes.add(character_class);
         }
 
@@ -172,19 +174,19 @@ public class EditCharacterActivity extends AppCompatActivity {
         int countAttacks = attackList.size();
 
         //unarmed strike deals bludgeoning damage equal to 1 + your Strength modifier
-       // if (countAttacks == 0){
-         //   attackList.add("Unarmed" + " +" + characterModel.getModifier(characterModel.dex)  + "   " + characterModel.getUnarmedStrikeDMG() + " " + "Bludgeoning");
-       // }
+        // if (countAttacks == 0){
+        //   attackList.add("Unarmed" + " +" + characterModel.getModifier(characterModel.dex)  + "   " + characterModel.getUnarmedStrikeDMG() + " " + "Bludgeoning");
+        // }
 
-        while(countAttacks < minAttacks) {
-        attackList.add("none");
+        while (countAttacks < minAttacks) {
+            attackList.add("none");
             countAttacks = attackList.size();
 
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
-                attackList );
+                attackList);
 
         lv.setAdapter(arrayAdapter);
     }
@@ -193,17 +195,17 @@ public class EditCharacterActivity extends AppCompatActivity {
         ArrayList<WeaponModel> weapons = characterModel.getWeapons();
         List<String> attackList = new ArrayList<String>();
         int minAttacks = 4;
-        for(WeaponModel weapon : weapons) {
+        for (WeaponModel weapon : weapons) {
             attackList.add(weapon.toString());
         }
         int countAttacks = attackList.size();
 
         //unarmed strike deals bludgeoning damage equal to 1 + your Strength modifier
-        if (countAttacks == 0){
-            attackList.add("Unarmed" + " +" + PlayerHelper.getModifier(characterModel.dex)  + "   " + characterModel.getUnarmedStrikeDMG() + " " + "Bludgeoning");
+        if (countAttacks == 0) {
+            attackList.add("Unarmed" + " +" + PlayerHelper.getModifier(characterModel.dex) + "   " + characterModel.getUnarmedStrikeDMG() + " " + "Bludgeoning");
         }
 
-        while(countAttacks < minAttacks) {
+        while (countAttacks < minAttacks) {
             attackList.add("none");
             countAttacks = attackList.size();
 
@@ -211,10 +213,9 @@ public class EditCharacterActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
-                attackList );
+                attackList);
 
         lv.setAdapter(arrayAdapter);
-
 
 
     }
@@ -234,13 +235,12 @@ public class EditCharacterActivity extends AppCompatActivity {
         int chr = Integer.parseInt(textView_chrstat.getText().toString());
 
         if (name != null && characterClass != null && level >= 1 && xp >= 0 && alignment != null
-                && ac > 0 && str > 0 && dex > 0 && con > 0 && wis > 0 && intel > 0 && chr > 0 ) {
+                && ac > 0 && str > 0 && dex > 0 && con > 0 && wis > 0 && intel > 0 && chr > 0) {
 
             if (isNew) {
                 CharacterModel newCharacter = new CharacterModel(name, "", characterClass, alignment, level, xp, ac, str, dex, con, wis, intel, chr);
                 sqlHelper.addCharacter(newCharacter);
-            }
-            else {
+            } else {
                 // existing character;
                 int id = mIntent.getIntExtra("character_id", 0);
                 CharacterModel oldCharacter = new CharacterModel(id, name, "", characterClass, alignment, level, xp, ac, str, dex, con, wis, intel, chr);
@@ -249,18 +249,15 @@ public class EditCharacterActivity extends AppCompatActivity {
             alertView("Character Saved");
 
 
-        }
-        else {
+        } else {
             // unfilled fields
             alertView("Please complete all fields");
         }
 
 
-
-
     }
 
-    private void alertView( String message ) {
+    private void alertView(String message) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
         dialog.setTitle("Combat Tracker")
@@ -276,9 +273,6 @@ public class EditCharacterActivity extends AppCompatActivity {
                     }
                 }).show();
     }
-
-
-
 
 
 }

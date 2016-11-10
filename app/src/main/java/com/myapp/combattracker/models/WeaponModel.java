@@ -11,7 +11,7 @@ public class WeaponModel extends ItemModel {
     public String dmg;
     public String dmgType;
 
-    public WeaponModel(String name, String text, int atk, String dmg, String dmgType ) {
+    public WeaponModel(String name, String text, int atk, String dmg, String dmgType) {
         super(name, text);
         this.atk = atk;
         this.dmg = dmg;
@@ -19,7 +19,7 @@ public class WeaponModel extends ItemModel {
 
     }
 
-    public WeaponModel(int id, int ownerid, String name, String text, int atk, String dmg, String dmgType ) {
+    public WeaponModel(int id, int ownerid, String name, String text, int atk, String dmg, String dmgType) {
         super(id, ownerid, name, text);
         this.atk = atk;
         this.dmg = dmg;
@@ -27,7 +27,7 @@ public class WeaponModel extends ItemModel {
 
     }
 
-    public WeaponModel(int ownerid, String name, String text, int atk, String dmg, String dmgType ) {
+    public WeaponModel(int ownerid, String name, String text, int atk, String dmg, String dmgType) {
         super(ownerid, name, text);
         this.atk = atk;
         this.dmg = dmg;
