@@ -8,6 +8,9 @@
     <string name="button_new_character">Create New Character</string>
     <string name="button_monsters">Manage Monsters</string>
     <string name="button_encounter">Encounters</string>
+    <string name="textview">TextView</string>
+    <string name="edit_character">Edit Character</string>
+    <string name="load_character">Load Character</string>
 
 
     <string-array name="planets_array">
@@ -19,5 +22,25 @@
         <item>Saturn</item>
         <item>Uranus</item>
         <item>Neptune</item>
+    </string-array>
+
+    <string-array name="alignments_array">
+        <item>Chaotic Evil</item>
+        <item>Neutral Evil</item>
+        <item>Lawful Evil</item>
+        <item>Chaotic Good</item>
+        <item>Neutral Good</item>
+        <item>Lawful Good</item>
+
+    </string-array>
+
+    <string-array name="class_array">
+        <item>Fighter</item>
+        <item>Rogue</item>
+        <item>Cleric</item>
+        <item>Wizard</item>
+        <item>Barbarian</item>
+        <item>Monk</item>
+
     </string-array>
 </resources>

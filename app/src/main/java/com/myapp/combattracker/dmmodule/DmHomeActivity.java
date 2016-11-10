@@ -1,9 +1,9 @@
 package com.myapp.combattracker.dmmodule;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import com.myapp.combattracker.*;
+import android.support.v7.app.AppCompatActivity;
 
+import com.myapp.combattracker.R;
 
 
 public class DmHomeActivity extends AppCompatActivity {
