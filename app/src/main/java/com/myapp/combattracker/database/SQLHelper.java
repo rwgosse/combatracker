@@ -20,10 +20,11 @@ import com.myapp.combattracker.models.*;
 public class SQLHelper extends SQLiteOpenHelper {
 
     // Current version of database
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 14;
     // Database Name
     public static String DATABASE_NAME = "combat_database";
     public static String TAG = "tag";
+    private SQLiteDatabase db;
 
     // Characters Table
     private static final String TABLE_CHARACTERS = "characters";
@@ -126,6 +127,8 @@ public class SQLHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        this.db = db;
+
 
 
         // create all tables
@@ -151,8 +154,9 @@ public class SQLHelper extends SQLiteOpenHelper {
         addAlignment(db, new Alignment("Neutral Evil"));
         addAlignment(db, new Alignment("Chaotic Evil"));
 
-        addCharacter(db, new CharacterModel("Dave", "Big Guy", getCharacterClass(db, "Fighter"), getAlignment(db, 1)));
-        addCharacter(db, new CharacterModel("Ed", "Magic Guy", getCharacterClass(db, "Wizard"), getAlignment(db, 2)));
+        addCharacter(new CharacterModel("Bob", "Little Guy", getCharacterClass(db,"Rogue"), getAlignment(1)));
+        addCharacter(new CharacterModel("Dave", "Big Guy", getCharacterClass(db,"Fighter"), getAlignment(1)));
+        addCharacter(new CharacterModel("Ed", "Magic Guy", getCharacterClass(db,"Wizard"), getAlignment(2)));
 
         addItem(db, new ItemModel("Torch", "Lights Up"));
         addItem(db, new ItemModel(0, "Bag of Holding", "Contains Items"));
@@ -175,9 +179,10 @@ public class SQLHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_STUDENTS); // drop table if exists
-        db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_CHARACTER_CLASSES); // drop table if exists
-        db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_CHARACTERS); // drop table if exists
-        db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_ALIGNMENTS); // drop table if exists
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHARACTER_CLASSES); // drop table if exists
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHARACTERS); // drop table if exists
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ALIGNMENTS); // drop table if exists
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS); // drop table if exists
 
         onCreate(db);
     }
@@ -259,7 +264,7 @@ public class SQLHelper extends SQLiteOpenHelper {
      * @return
      */
     public CharacterClassModel getCharacterClass(SQLiteDatabase db, String name) {
-        // SQLiteDatabase db = this.getReadableDatabase();
+
 
         // SELECT * FROM students WHERE id = ?;
         String selectQuery = "SELECT * FROM " + TABLE_CHARACTER_CLASSES + " WHERE "
@@ -279,12 +284,30 @@ public class SQLHelper extends SQLiteOpenHelper {
         return characterClassModel;
     }
 
-    public Alignment getAlignment(SQLiteDatabase db, int id) {
+    public Alignment getAlignment(int id) {
         // SQLiteDatabase db = this.getReadableDatabase();
 
-        // SELECT * FROM students WHERE id = ?;
         String selectQuery = "SELECT * FROM " + TABLE_ALIGNMENTS + " WHERE "
                 + ALIGNMENT_ID + " = '" + id + "'";
+        Log.d(TAG, selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null)
+            c.moveToFirst();
+
+        Alignment alignment = new Alignment();
+        alignment.id = c.getInt(c != null ? c.getColumnIndex(ALIGNMENT_ID) : 0);
+        alignment.name = c.getString(c.getColumnIndex(ALIGNMENT_NAME));
+
+        c.close();
+        return alignment;
+    }
+
+    public Alignment getAlignment(String name) {
+        db = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + TABLE_ALIGNMENTS + " WHERE "
+                + ALIGNMENT_NAME + " = '" + name + "'";
         Log.d(TAG, selectQuery);
 
         Cursor c = db.rawQuery(selectQuery, null);
@@ -308,7 +331,7 @@ public class SQLHelper extends SQLiteOpenHelper {
      * @return
      */
 
-    public long addCharacter(SQLiteDatabase db, CharacterModel character) {
+    public long addCharacter(CharacterModel character) {
 
 
         // Creating content values
@@ -319,6 +342,13 @@ public class SQLHelper extends SQLiteOpenHelper {
         values.put(CHARACTER_CLASS, character.getClassName());
         values.put(CHARACTER_XP, character.xp);
         values.put(CHARACTER_ALIGN, character.alignment.id);
+        values.put(CHARACTER_AC, character.ac);
+        values.put(CHARACTER_STR, character.str);
+        values.put(CHARACTER_CON, character.con);
+        values.put(CHARACTER_DEX, character.dex);
+        values.put(CHARACTER_WIS, character.wis);
+        values.put(CHARACTER_INT, character.intel);
+        values.put(CHARACTER_CHR, character.chr);
 
         // insert row in characters table
 
@@ -369,7 +399,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     }
 
     public CharacterModel getCharacter(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+       db = this.getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_CHARACTERS + " WHERE " + CHARACTER_ID + " = '" + id + "'";
         Log.d(TAG, selectQuery);
         Cursor c = db.rawQuery(selectQuery, null);
@@ -384,7 +414,7 @@ public class SQLHelper extends SQLiteOpenHelper {
         character.id = c.getInt(c.getColumnIndex(CHARACTER_ID));
         character.name = c.getString(c.getColumnIndex(CHARACTER_NAME));
         character.characterClassModel = getCharacterClass(db, c.getString(c.getColumnIndex(CHARACTER_CLASS)));
-        character.alignment = getAlignment(db, (c.getColumnIndex(CHARACTER_ALIGN)));
+        character.alignment = getAlignment((c.getColumnIndex(CHARACTER_ALIGN)));
         character.ac = c.getInt(c.getColumnIndex(CHARACTER_AC));
         character.str = c.getInt(c.getColumnIndex(CHARACTER_STR));
         character.con = c.getInt(c.getColumnIndex(CHARACTER_CON));
@@ -392,6 +422,7 @@ public class SQLHelper extends SQLiteOpenHelper {
         character.wis = c.getInt(c.getColumnIndex(CHARACTER_WIS));
         character.intel = c.getInt(c.getColumnIndex(CHARACTER_INT));
         character.chr = c.getInt(c.getColumnIndex(CHARACTER_CHR));
+        System.out.println("chr = " + character.chr);
         character.level = c.getInt(c.getColumnIndex(CHARACTER_LEVEL));
         character.xp = c.getInt(c.getColumnIndex(CHARACTER_XP));
 
@@ -474,5 +505,25 @@ public class SQLHelper extends SQLiteOpenHelper {
         }
         c.close();
         return alignArrayList;
+    }
+
+    public long updateCharacter(CharacterModel character) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values= new ContentValues();
+        values.put(CHARACTER_NAME, character.name);
+        values.put(CHARACTER_TEXT, character.text);
+        values.put(CHARACTER_LEVEL, character.level);
+        values.put(CHARACTER_CLASS, character.getClassName());
+        values.put(CHARACTER_XP, character.xp);
+        values.put(CHARACTER_ALIGN, character.alignment.id);
+        values.put(CHARACTER_AC, character.ac);
+        values.put(CHARACTER_STR, character.str);
+        values.put(CHARACTER_CON, character.con);
+        values.put(CHARACTER_DEX, character.dex);
+        values.put(CHARACTER_WIS, character.wis);
+        values.put(CHARACTER_INT, character.intel);
+        values.put(CHARACTER_CHR, character.chr);
+
+        return db.update(TABLE_CHARACTERS, values, "id="+character.id, null);
     }
 }

@@ -25,22 +25,17 @@ public class PlayerHomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_home);
-
-
-
         sqlHelper = new SQLHelper(getApplicationContext());
-
-
-
         populate_character_choice();
+    }
 
-
-
-
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        populate_character_choice();
     }
 
 

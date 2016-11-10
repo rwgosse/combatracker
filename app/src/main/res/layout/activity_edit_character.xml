@@ -236,7 +236,8 @@
         android:id="@+id/button_save"
         android:text="Save"
         android:layout_below="@+id/textView_chr"
-        android:layout_alignParentBottom="true"/>
+        android:layout_centerHorizontal="true"
+        android:onClick="click_save"/>
 
 
 

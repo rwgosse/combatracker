@@ -1,5 +1,7 @@
 package com.myapp.combattracker.models;
 
+import com.myapp.combattracker.Helpers.PlayerHelper;
+
 import java.util.ArrayList;
 
 /**
@@ -40,13 +42,27 @@ public class CharacterModel {
         this.xp = 0;
         this.inventory = new ArrayList<ItemModel>();
 
+        //random stats for new characters
+        this.str = PlayerHelper.generateStat();
+        this.con = PlayerHelper.generateStat();
+        this.dex = PlayerHelper.generateStat();
+        this.wis = PlayerHelper.generateStat();
+        this.intel = PlayerHelper.generateStat();
+        this.chr = PlayerHelper.generateStat();
+        this.ac = 10 + PlayerHelper.getModifier(this.dex);
+
+
+
+
+
 
 
     }
 
 
     // constructor for existing characters, such as those in the database
-    public CharacterModel(int id, String name, String text, CharacterClassModel characterClassModel, Alignment alignment, int level, int xp) {
+    public CharacterModel(int id, String name, String text, CharacterClassModel characterClassModel, Alignment alignment, int level, int xp,
+                            int ac, int str, int con, int dex, int wis, int intel, int chr) {
         // TODO Auto-generated constructor stub
         this.id = id;
         this.name = name;
@@ -55,10 +71,45 @@ public class CharacterModel {
         this.alignment = alignment;
         this.level = level;
         this.xp = xp;
+        this.ac = ac;
+        this.str = str;
+        this.con = con;
+        this.dex = dex;
+        this.wis = wis;
+        this.intel = intel;
+        this.chr = chr;
+
+
+
         this.inventory = new ArrayList<ItemModel>();
 
 
     }
+
+    // constructor for new characters when saving
+    public CharacterModel(String name, String text, CharacterClassModel characterClassModel, Alignment alignment, int level, int xp,
+                          int ac, int str, int con, int dex, int wis, int intel, int chr) {
+        this.name = name;
+        this.text = text;
+        this.characterClassModel = characterClassModel;
+        this.alignment = alignment;
+        this.level = level;
+        this.xp = xp;
+        this.ac = ac;
+        this.str = str;
+        this.con = con;
+        this.dex = dex;
+        this.wis = wis;
+        this.intel = intel;
+        this.chr = chr;
+
+
+
+        this.inventory = new ArrayList<ItemModel>();
+
+
+    }
+
     public CharacterModel(){
         this.inventory = new ArrayList<ItemModel>();
 
@@ -94,6 +145,14 @@ public class CharacterModel {
 
         }
         return weapons;
+
+    }
+
+
+
+
+    public int getUnarmedStrikeDMG() {
+        return 1 + PlayerHelper.getModifier(str);
 
     }
 
