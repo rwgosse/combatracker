@@ -18,10 +18,10 @@ import java.util.List;
 
 public class PlayerHomeActivity extends AppCompatActivity {
 
-    SQLHelper sqlHelper;
-    TextView textTemp;
-    Spinner spinner;
-    List<CharacterModel> list = new ArrayList<CharacterModel>();
+    private SQLHelper sqlHelper;
+    private TextView textTemp;
+    private Spinner spinner;
+    private List<CharacterModel> list = new ArrayList<CharacterModel>();
 
 
     @Override

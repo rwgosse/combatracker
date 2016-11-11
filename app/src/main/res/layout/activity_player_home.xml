@@ -15,11 +15,12 @@
         android:layout_alignParentTop="true" />
 
     <Spinner
-        android:layout_width="172dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:id="@+id/spinner_character_choice"
-        android:layout_below="@id/text_characters" />
+        android:layout_below="@id/text_characters"
+        android:textAlignment="center"/>
 
     <Button
         android:layout_width="wrap_content"

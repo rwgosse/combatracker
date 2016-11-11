@@ -55,23 +55,27 @@
         android:layout_marginBottom="25dip" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></RelativeLayout>
+        android:id="@+id/layout_stats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationX="-10dp"
+        android:layout_below="@+id/textView_align"
+       >
 
     <RelativeLayout
         android:id="@+id/layout_ac"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView_align">
+        android:layout_centerHorizontal="true"
+        >
 
     <TextView
         android:text="AC"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView_align"
         android:id="@+id/textView_ac"
         android:layout_marginLeft="10dp"
-        android:translationX="15dp"
+        android:layout_centerHorizontal="true"
         android:translationY="5dp" />
 
     <TextView
@@ -82,21 +86,21 @@
         android:id="@+id/textView_acbox"
         android:layout_marginBottom="15dip"
         android:textSize="35dp"
-        android:translationX="15dp"
+        android:layout_centerHorizontal="true"
+
         android:translationY="5dp" />
 
         <ImageView
             android:id="@+id/flag"
-
             android:scaleType="centerInside"
             android:src="@drawable/shield"
             android:adjustViewBounds="true"
             android:cropToPadding="true"
             android:layout_alignParentStart="true"
-
             android:layout_width="85dp"
             android:layout_height="85dp"
-            android:translationX="-5dp" />
+
+          />
 
         </RelativeLayout>
 
@@ -104,22 +108,24 @@
         android:id="@+id/layout_str"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_ac">
+        android:layout_below="@+id/layout_ac"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dip">
     <TextView
         android:text="STR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView_str"
-        android:layout_marginBottom="5dip" />
-
+        android:layout_centerHorizontal="true"
+        />
     <TextView
         android:text="10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView_str"
         android:id="@+id/textView_strstat"
-        android:layout_marginBottom="5dip"
-        android:translationX="5dp"
+
+        android:layout_centerHorizontal="true"
         />
 </RelativeLayout>
 
@@ -127,16 +133,16 @@
         android:id="@+id/layout_con"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_str">
+        android:layout_below="@+id/layout_str"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dip">
     <TextView
         android:text="CON"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:layout_centerHorizontal="true"
         android:id="@+id/textView_con"
-        android:layout_marginBottom="5dip" />
-
-
+         />
     <TextView
         android:text="10"
         android:layout_width="wrap_content"
@@ -144,44 +150,45 @@
         android:layout_below="@+id/textView_con"
         android:id="@+id/textView_constat"
         android:layout_marginBottom="5dip"
-        android:translationX="5dp" />
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layout_dex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_con">
+        android:layout_below="@+id/layout_con"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dip">
     <TextView
         android:text="DEX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView_constat"
         android:id="@+id/textView_dex"
-        android:layout_marginBottom="5dip" />
-
+        android:layout_centerHorizontal="true" />
     <TextView
         android:text="10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView_dex"
         android:id="@+id/textView_dexstat"
-        android:layout_marginBottom="5dip"
-        android:translationX="5dp" />
-        </RelativeLayout>
+
+        android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/layout_wiz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_dex">
-
-
+        android:layout_below="@+id/layout_dex"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dip">
     <TextView
         android:text="WIZ"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView_wiz"
-        android:layout_marginBottom="5dip" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:text="10"
@@ -189,15 +196,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView_wiz"
         android:id="@+id/textView_wizstat"
-        android:layout_marginBottom="5dip"
-        android:translationX="5dp" />
+
+        android:layout_centerHorizontal="true" />
         </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layout_int"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_wiz">
+        android:layout_below="@+id/layout_wiz"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dip">
 
     <TextView
         android:text="INT"
@@ -205,7 +214,7 @@
         android:layout_height="wrap_content"
 
         android:id="@+id/textView_int"
-        android:layout_marginBottom="5dip" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:text="10"
@@ -213,14 +222,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView_int"
         android:id="@+id/textView_intstat"
-        android:layout_marginBottom="5dip"
-        android:translationX="5dp" />
+
+        android:layout_centerHorizontal="true" />
         </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/layout_chr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_int">
+        android:layout_below="@+id/layout_int"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dip">
 
 
     <TextView
@@ -228,8 +240,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView_chr"
-
-        android:layout_marginBottom="5dip" />
+        android:layout_centerHorizontal="true" />
 
 
     <TextView
@@ -238,9 +249,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView_chrstat"
         android:layout_below="@+id/textView_chr"
-        android:layout_marginBottom="5dip"
-        android:translationX="5dp" />
+
+        android:layout_centerHorizontal="true" />
         </RelativeLayout>
+    </RelativeLayout>
 
 
     <EditText
@@ -301,18 +313,18 @@
 
     <RelativeLayout
         android:id="@+id/layout_attacks"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-       android:layout_toRightOf="@id/layout_ac"
+        android:layout_alignParentRight="true"
         android:background="@drawable/customborder"
-android:layout_below="@id/spinner_align"
+        android:layout_below="@id/spinner_align"
 
-        android:translationX="10dp"
-        android:layout_marginLeft="25dip"
-        android:layout_marginRight="25dip"
+
+        android:layout_marginLeft="80dip"
+        android:layout_marginRight="5dip"
         android:layout_marginTop="25dip"
         android:layout_marginBottom="25dip"
-        android:layout_toEndOf="@+id/layout_ac">
+       >
 
         <TextView
             android:text="ATTACKS:"

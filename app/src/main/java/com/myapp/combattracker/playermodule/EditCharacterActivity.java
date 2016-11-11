@@ -28,25 +28,24 @@ import java.util.List;
 
 public class EditCharacterActivity extends AppCompatActivity {
 
-
-    ListView lv;
-    SQLHelper sqlHelper;
-    EditText text_name;
-    Spinner spin_class;
-    Spinner spin_align;
-    EditText text_level;
-    EditText text_xp;
-    TextView textView_acbox;
-    TextView textView_strstat;
-    TextView textView_constat;
-    TextView textView_dexstat;
-    TextView textView_wisstat;
-    TextView textView_intstat;
-    TextView textView_chrstat;
-    Button button_save;
-    boolean isNew = true;
-    Intent mIntent;
-    SQLiteDatabase db;
+    private ListView lv;
+    private SQLHelper sqlHelper;
+    private EditText text_name;
+    private Spinner spin_class;
+    private Spinner spin_align;
+    private EditText text_level;
+    private EditText text_xp;
+    private TextView textView_acbox;
+    private TextView textView_strstat;
+    private TextView textView_constat;
+    private TextView textView_dexstat;
+    private TextView textView_wisstat;
+    private TextView textView_intstat;
+    private TextView textView_chrstat;
+    private Button button_save;
+    private boolean isNew = true;
+    private Intent mIntent;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +110,6 @@ public class EditCharacterActivity extends AppCompatActivity {
         spin_class.setSelection(character.characterClassModel.id - 1);
         text_level.setText(String.valueOf(character.level));
         text_xp.setText(String.valueOf(character.xp));
-        spin_align.setSelection(character.alignment.id);
         populate_attack_listview(character);
         textView_acbox.setText(String.valueOf(character.ac));
         textView_strstat.setText(String.valueOf(character.str));
@@ -119,8 +117,10 @@ public class EditCharacterActivity extends AppCompatActivity {
         textView_constat.setText(String.valueOf(character.con));
         textView_wisstat.setText(String.valueOf(character.wis));
         textView_intstat.setText(String.valueOf(character.intel));
-        System.out.println("chr =" + character.chr);
         textView_chrstat.setText(String.valueOf(character.chr));
+        spin_align.setSelection(character.getAlignmentId());
+
+
     }
 
     private void populate_alignment_spinner() {
@@ -129,6 +129,7 @@ public class EditCharacterActivity extends AppCompatActivity {
         List<Alignment> list = sqlHelper.getAllAlignList();
 
         for (Alignment alignment : list) {
+            System.out.println("populate alignment spinner : align=" + alignment.getId());
             alignments.add(alignment);
         }
 
@@ -202,7 +203,15 @@ public class EditCharacterActivity extends AppCompatActivity {
 
         //unarmed strike deals bludgeoning damage equal to 1 + your Strength modifier
         if (countAttacks == 0) {
-            attackList.add("Unarmed" + " +" + PlayerHelper.getModifier(characterModel.dex) + "   " + characterModel.getUnarmedStrikeDMG() + " " + "Bludgeoning");
+            int modifier = PlayerHelper.getModifier(characterModel.dex);
+            String symbol = " ";
+            if (modifier < 0) {
+                //do nothing
+            }
+            else {
+                symbol = " +";
+            }
+            attackList.add("Unarmed" + symbol + PlayerHelper.getModifier(characterModel.dex) + "   " + characterModel.getUnarmedStrikeDMG() + " " + "Bludgeoning");
         }
 
         while (countAttacks < minAttacks) {
@@ -221,11 +230,12 @@ public class EditCharacterActivity extends AppCompatActivity {
     }
 
     public void click_save(View view) {
+        sqlHelper.getReadableDatabase();
         String name = text_name.getText().toString();
-        CharacterClassModel characterClass = sqlHelper.getCharacterClass(db, spin_class.getSelectedItem().toString());
+        CharacterClassModel characterClass = sqlHelper.getCharacterClass(spin_class.getSelectedItem().toString());
         int level = Integer.parseInt(text_level.getText().toString());
         int xp = Integer.parseInt(text_xp.getText().toString());
-        Alignment alignment = sqlHelper.getAlignment(spin_align.getSelectedItem().toString());
+        Alignment alignment = sqlHelper.getAlignment(spin_align.getSelectedItemPosition());
         int ac = Integer.parseInt(textView_acbox.getText().toString());
         int str = Integer.parseInt(textView_strstat.getText().toString());
         int dex = Integer.parseInt(textView_dexstat.getText().toString());
@@ -234,7 +244,7 @@ public class EditCharacterActivity extends AppCompatActivity {
         int intel = Integer.parseInt(textView_intstat.getText().toString());
         int chr = Integer.parseInt(textView_chrstat.getText().toString());
 
-        if (name != null && characterClass != null && level >= 1 && xp >= 0 && alignment != null
+        if (!name.isEmpty() && characterClass != null && level >= 1 && xp >= 0 && alignment != null
                 && ac > 0 && str > 0 && dex > 0 && con > 0 && wis > 0 && intel > 0 && chr > 0) {
 
             if (isNew) {
@@ -246,18 +256,18 @@ public class EditCharacterActivity extends AppCompatActivity {
                 CharacterModel oldCharacter = new CharacterModel(id, name, "", characterClass, alignment, level, xp, ac, str, dex, con, wis, intel, chr);
                 sqlHelper.updateCharacter(oldCharacter);
             }
-            alertView("Character Saved");
+            alertView(true, "Character Saved");
 
 
         } else {
             // unfilled fields
-            alertView("Please complete all fields");
+            alertView(false, "Please complete all fields");
         }
 
 
     }
 
-    private void alertView(String message) {
+    private void alertView(final boolean saved, String message) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
         dialog.setTitle("Combat Tracker")
@@ -269,7 +279,9 @@ public class EditCharacterActivity extends AppCompatActivity {
                 //          }})
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialoginterface, int i) {
-                        finish();
+                        if (saved) {
+                            finish();
+                        }
                     }
                 }).show();
     }

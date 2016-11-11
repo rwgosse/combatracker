@@ -14,7 +14,7 @@ public class CharacterModel {
     public int level;
     public int xp;
     public CharacterClassModel characterClassModel;
-    public Alignment alignment;
+    private Alignment alignment;
     public String text;
 
     public int ac;
@@ -25,12 +25,12 @@ public class CharacterModel {
     public int intel;
     public int chr;
 
-    public ArrayList<ItemModel> inventory;
+    private ArrayList<ItemModel> inventory;
 
 
     // constructor for new characters, starting at level 1
     public CharacterModel(String name, String text, CharacterClassModel characterClassModel, Alignment alignment) {
-        // TODO Auto-generated constructor stub
+
 
         this.name = name;
         this.text = text;
@@ -94,8 +94,6 @@ public class CharacterModel {
         this.wis = wis;
         this.intel = intel;
         this.chr = chr;
-
-
         this.inventory = new ArrayList<ItemModel>();
 
 
@@ -112,7 +110,7 @@ public class CharacterModel {
 
     @Override
     public String toString() {
-        return this.name + " " + this.characterClassModel.name + " " + "(" + this.level + ")";
+        return this.name + " - " + this.characterClassModel.name + " " + "(" + this.level + ")";
     }
 
     public void addItem(ItemModel item) {
@@ -142,6 +140,17 @@ public class CharacterModel {
 
     public int getUnarmedStrikeDMG() {
         return 1 + PlayerHelper.getModifier(str);
+
+    }
+
+    public int getAlignmentId() {
+        return this.alignment.getId();
+    }
+
+    public void setAlignment(Alignment alignment) {
+        if (alignment != null) {
+            this.alignment = alignment;
+        }
 
     }
 

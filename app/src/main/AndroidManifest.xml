@@ -12,13 +12,12 @@
         <activity android:name="com.myapp.combattracker.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name="com.myapp.combattracker.dmmodule.DmHomeActivity" />
         <activity android:name="com.myapp.combattracker.playermodule.EditCharacterActivity" />
-        <activity android:name="com.myapp.combattracker.playermodule.PlayerHomeActivity"></activity>
+        <activity android:name="com.myapp.combattracker.playermodule.PlayerHomeActivity"/>
     </application>
 
 </manifest>

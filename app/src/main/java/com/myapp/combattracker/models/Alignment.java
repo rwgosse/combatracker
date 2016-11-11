@@ -5,15 +5,15 @@ package com.myapp.combattracker.models;
  */
 
 public class Alignment {
-    public int id;
-    public String name;
+    private int id;
+    private String name;
 
     public Alignment() {
 
     }
 
-    public Alignment(String name) {
-
+    public Alignment(int id, String name) {
+        this.id = id;
         this.name = name;
 
     }
@@ -21,5 +21,9 @@ public class Alignment {
     @Override
     public String toString() {
         return this.name;
+    }
+
+    public int getId(){
+        return id;
     }
 }
