@@ -1,46 +1,41 @@
 package com.myapp.combattracker.playermodule;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import com.myapp.combattracker.database.SQLHelper;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ArrayAdapter;
-import android.content.Intent;
-import android.view.View;
-import com.myapp.combattracker.*;
-import com.myapp.combattracker.models.*;
-import java.util.*;
 
+import com.myapp.combattracker.R;
+import com.myapp.combattracker.database.SQLHelper;
+import com.myapp.combattracker.models.CharacterModel;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PlayerHomeActivity extends AppCompatActivity {
 
-    SQLHelper sqlHelper;
-    TextView textTemp;
-    Spinner spinner;
-    List<CharacterModel> list = new ArrayList<CharacterModel>();
+    private SQLHelper sqlHelper;
+    private TextView textTemp;
+    private Spinner spinner;
+    private List<CharacterModel> list = new ArrayList<CharacterModel>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_home);
-
-
-
         sqlHelper = new SQLHelper(getApplicationContext());
-
-
-
         populate_character_choice();
+    }
 
-
-
-
+    @Override
+    public void onResume() {  // After a pause OR at startup
+        super.onResume();
+        populate_character_choice();
     }
 
 
@@ -60,8 +55,6 @@ public class PlayerHomeActivity extends AppCompatActivity {
     }
 
 
-
-
     private void populate_character_choice() {
         spinner = (Spinner) findViewById(R.id.spinner_character_choice);
 
@@ -70,7 +63,7 @@ public class PlayerHomeActivity extends AppCompatActivity {
         List<CharacterModel> characters = new ArrayList<CharacterModel>();
         list = sqlHelper.getAllCharactersList();
 
-        for(CharacterModel character : list){
+        for (CharacterModel character : list) {
             characters.add(character);
         }
 

@@ -5,9 +5,6 @@ package com.myapp.combattracker.database;
  * Database Helper Call used to create , upgrade database , create table and perform C.R.U.D.  operations
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -15,16 +12,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.myapp.combattracker.models.*;
+import com.myapp.combattracker.models.Alignment;
+import com.myapp.combattracker.models.CharacterClassModel;
+import com.myapp.combattracker.models.CharacterModel;
+import com.myapp.combattracker.models.ItemModel;
+import com.myapp.combattracker.models.WeaponModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQLHelper extends SQLiteOpenHelper {
 
     // Current version of database
-    private static final int DATABASE_VERSION = 1;
-    // Database Name
-    public static String DATABASE_NAME = "combat_database";
-    public static String TAG = "tag";
-
+    private static final int DATABASE_VERSION = 28;
     // Characters Table
     private static final String TABLE_CHARACTERS = "characters";
     private static final String CHARACTER_ID = "id";
@@ -57,7 +57,6 @@ public class SQLHelper extends SQLiteOpenHelper {
             + CHARACTER_WIS + " INTEGER,"
             + CHARACTER_INT + " INTEGER,"
             + CHARACTER_CHR + " INTEGER);";
-
     // Character Class Table
     private static final String TABLE_CHARACTER_CLASSES = "characterclasses";
     private static final String CLASS_ID = "id";
@@ -66,7 +65,6 @@ public class SQLHelper extends SQLiteOpenHelper {
             + TABLE_CHARACTER_CLASSES + "("
             + CLASS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + CHARACTER_CLASS_NAME + " TEXT);";
-
     // Alignment Table
     private static final String TABLE_ALIGNMENTS = "alignments";
     private static final String ALIGNMENT_ID = "id";
@@ -75,12 +73,11 @@ public class SQLHelper extends SQLiteOpenHelper {
             + TABLE_ALIGNMENTS + "("
             + ALIGNMENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + ALIGNMENT_NAME + " TEXT);";
-
-    // Items Table
-
     private static final String TABLE_ITEMS = "items";
     private static final String ITEM_ID = "id";
     private static final String ITEM_TYPE = "itemtype";
+
+    // Items Table
     private static final String OWNER_ID = "ownerid";
     private static final String ITEM_NAME = "name";
     private static final String ITEM_TEXT = "text";
@@ -97,7 +94,10 @@ public class SQLHelper extends SQLiteOpenHelper {
             + WEAPON_DAMAGE + " TEXT,"
             + WEAPON_ATTACK + " INTEGER,"
             + WEAPON_TYPE + " TEXT);";
-
+    // Database Name
+    private final static String DATABASE_NAME = "combat_database";
+    private final static String TAG = "tag";
+    private SQLiteDatabase db;
 
 
     // Abilities Table
@@ -107,12 +107,6 @@ public class SQLHelper extends SQLiteOpenHelper {
     // Monsters Table
 
     // Spells Table
-
-    // Weapons Table
-
-
-
-
 
 
 
@@ -126,6 +120,7 @@ public class SQLHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        this.db = db;
 
 
         // create all tables
@@ -144,25 +139,26 @@ public class SQLHelper extends SQLiteOpenHelper {
         addCharacterClass(db, new CharacterClassModel("Barbarian"));
         addCharacterClass(db, new CharacterClassModel("Monk"));
 
-        addAlignment(db, new Alignment("Lawful Good"));
-        addAlignment(db, new Alignment("Neutral Good"));
-        addAlignment(db, new Alignment("Chaotic Good"));
-        addAlignment(db, new Alignment("Lawful Evil"));
-        addAlignment(db, new Alignment("Neutral Evil"));
-        addAlignment(db, new Alignment("Chaotic Evil"));
+        addAlignment(new Alignment(0, "Lawful Good"));
+        addAlignment(new Alignment(1, "Neutral Good"));
+        addAlignment(new Alignment(2, "Chaotic Good"));
+        addAlignment(new Alignment(3, "Lawful Evil"));
+        addAlignment(new Alignment(4, "Neutral Evil"));
+        addAlignment(new Alignment(5, "Chaotic Evil"));
 
-        addCharacter(db, new CharacterModel("Dave", "Big Guy", getCharacterClass(db, "Fighter"), getAlignment(db, 1)));
-        addCharacter(db, new CharacterModel("Ed", "Magic Guy", getCharacterClass(db, "Wizard"), getAlignment(db, 2)));
+        addCharacter(new CharacterModel("Bob", "Little Guy", getCharacterClass("Rogue"), getAlignment(2)));
+        addCharacter(new CharacterModel("Dave", "Big Guy", getCharacterClass("Fighter"), getAlignment(2)));
+        addCharacter(new CharacterModel("Ed", "Magic Guy", getCharacterClass("Wizard"), getAlignment(2)));
 
-        addItem(db, new ItemModel("Torch", "Lights Up"));
-        addItem(db, new ItemModel(0, "Bag of Holding", "Contains Items"));
-        addItem(db, new ItemModel(0, "Thieve's Tools", "Lockpicks, etc"));
-        addItem(db, new ItemModel(1, "Bag of Holding", "Contains Items"));
-        addItem(db, new ItemModel(2, "Shield", "Extra Protection"));
-        addItem(db, new ItemModel(3, "Bag of Holding", "Contains Items"));
-        addItem(db, new WeaponModel(0, "Sword", "Sharp & Pointy", 2, "1d6", "Slashing"));
-        addItem(db, new WeaponModel(1, "Axe", "Sharp & Pointy", 3, "1d6", "Slashing"));
-        addItem(db, new WeaponModel(2, "Sword", "Sharp & Pointy", 2, "1d6", "Slashing"));
+        addItem(new ItemModel("Torch", "Lights Up"));
+        addItem(new ItemModel(0, "Bag of Holding", "Contains Items"));
+        addItem(new ItemModel(0, "Thieve's Tools", "Lockpicks, etc"));
+        addItem(new ItemModel(1, "Bag of Holding", "Contains Items"));
+        addItem(new ItemModel(2, "Shield", "Extra Protection"));
+        addItem(new ItemModel(3, "Bag of Holding", "Contains Items"));
+        addItem(new WeaponModel(0, "Sword", "Sharp & Pointy", 2, "1d6", "Slashing"));
+        addItem(new WeaponModel(1, "Axe", "Sharp & Pointy", 3, "1d6", "Slashing"));
+        addItem(new WeaponModel(2, "Sword", "Sharp & Pointy", 2, "1d6", "Slashing"));
 
 
         // end sample data
@@ -175,23 +171,18 @@ public class SQLHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_STUDENTS); // drop table if exists
-        db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_CHARACTER_CLASSES); // drop table if exists
-        db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_CHARACTERS); // drop table if exists
-        db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_ALIGNMENTS); // drop table if exists
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHARACTER_CLASSES); // drop table if exists
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHARACTERS); // drop table if exists
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ALIGNMENTS); // drop table if exists
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS); // drop table if exists
 
         onCreate(db);
     }
 
 
-    /**
-     *
-     * This method is used to add classes to the character classes Table
-     *
-     * @param characterClass
-     * @return
-     */
+
     public long addCharacterClass(SQLiteDatabase db, CharacterClassModel characterClass) {
-        //SQLiteDatabase db = this.getWritableDatabase();
+        checkDB();
 
         // Creating content values
         ContentValues values = new ContentValues();
@@ -199,34 +190,34 @@ public class SQLHelper extends SQLiteOpenHelper {
 
         // insert row in students table
 
-        long insert = db.insert(TABLE_CHARACTER_CLASSES, null, values);
+        return db.insert(TABLE_CHARACTER_CLASSES, null, values);
 
-        return insert;
+
     }
 
     /**
-     *
      * This method is used to add classes to the character classes Table
      *
      * @param alignment
-     * @return
+     * @return long
      */
-    public long addAlignment(SQLiteDatabase db,  Alignment alignment) {
-        //SQLiteDatabase db = this.getWritableDatabase();
+    public long addAlignment(Alignment alignment) {
+        checkDB();
 
         // Creating content values
         ContentValues values = new ContentValues();
-        values.put(ALIGNMENT_NAME, alignment.name);
+        values.put(ALIGNMENT_ID, alignment.getId());
+        values.put(ALIGNMENT_NAME, alignment.toString());
 
         // insert row in table
 
-        long insert = db.insert(TABLE_ALIGNMENTS, null, values);
+        return db.insert(TABLE_ALIGNMENTS, null, values);
 
-        return insert;
+
     }
 
-    public long addItem(SQLiteDatabase db, ItemModel item) {
-        //SQLiteDatabase db = this.getWritableDatabase();
+    public long addItem(ItemModel item) {
+        checkDB();
 
         // Creating content values
         ContentValues values = new ContentValues();
@@ -239,27 +230,24 @@ public class SQLHelper extends SQLiteOpenHelper {
             values.put(WEAPON_ATTACK, ((WeaponModel) item).atk);
             values.put(WEAPON_DAMAGE, ((WeaponModel) item).dmg);
             values.put(WEAPON_TYPE, ((WeaponModel) item).dmgType);
-        }
-        else values.put(ITEM_TYPE, "item");
+        } else values.put(ITEM_TYPE, "item");
         // insert row in table
 
-        long insert = db.insert(TABLE_ITEMS, null, values);
+        return  db.insert(TABLE_ITEMS, null, values);
 
-        return insert;
+
     }
 
-    //public ItemModel getItem(int itemId) {
-        //not yet implemented
-  //  }
 
     /**
      * Used to get a particular character class
      *
      * * @param name
-     * @return
+     *
+     * @return characterClassModel
      */
-    public CharacterClassModel getCharacterClass(SQLiteDatabase db, String name) {
-        // SQLiteDatabase db = this.getReadableDatabase();
+    public CharacterClassModel getCharacterClass(String name) {
+        checkDB();
 
         // SELECT * FROM students WHERE id = ?;
         String selectQuery = "SELECT * FROM " + TABLE_CHARACTER_CLASSES + " WHERE "
@@ -279,36 +267,56 @@ public class SQLHelper extends SQLiteOpenHelper {
         return characterClassModel;
     }
 
-    public Alignment getAlignment(SQLiteDatabase db, int id) {
-        // SQLiteDatabase db = this.getReadableDatabase();
-
-        // SELECT * FROM students WHERE id = ?;
+    public Alignment getAlignment(int id) {
+        System.out.println("getAlignment param = " + id);
+        checkDB();
         String selectQuery = "SELECT * FROM " + TABLE_ALIGNMENTS + " WHERE "
                 + ALIGNMENT_ID + " = '" + id + "'";
         Log.d(TAG, selectQuery);
-
         Cursor c = db.rawQuery(selectQuery, null);
-
         if (c != null)
             c.moveToFirst();
 
-        Alignment alignment = new Alignment();
-        alignment.id = c.getInt(c != null ? c.getColumnIndex(ALIGNMENT_ID) : 0);
-        alignment.name = c.getString(c.getColumnIndex(ALIGNMENT_NAME));
+        int alignId = c.getInt(c.getColumnIndex(ALIGNMENT_ID));
+        String name = c.getString(c.getColumnIndex(ALIGNMENT_NAME));
+        Alignment alignment = new Alignment(alignId, name);
 
         c.close();
         return alignment;
     }
 
+    public WeaponModel getItem(int id) {
+        System.out.println("getWeapon param = " + id);
+        checkDB();
+        String selectQuery = "SELECT * FROM " + TABLE_ITEMS + " WHERE "
+                + ITEM_ID + " = '" + id + "'";
+        Log.d(TAG, selectQuery);
+        Cursor c = db.rawQuery(selectQuery, null);
+        if (c != null)
+            c.moveToFirst();
+
+        int weaponId = c.getInt(c.getColumnIndex(ITEM_ID));
+        int ownerId = c.getInt(c.getColumnIndex(OWNER_ID));
+        String weaponName = c.getString(c.getColumnIndex(ITEM_NAME));
+        String weapontext = c.getString(c.getColumnIndex(ITEM_TEXT));
+        int atk = c.getInt(c.getColumnIndex(WEAPON_ATTACK));
+        String dmg = c.getString(c.getColumnIndex(WEAPON_DAMAGE));
+        String dmgType = c.getString(c.getColumnIndex(WEAPON_TYPE));
+        WeaponModel weapon = new WeaponModel(weaponId, ownerId, weaponName, weapontext, atk, dmg, dmgType);
+        c.close();
+        return weapon;
+    }
+
+
     /**
-     *
      * This method is used to add classes to the character classes Table
      *
-     * @param character
-     * @return
+     * @param character // character to be add to the database
+     * @return long
      */
 
-    public long addCharacter(SQLiteDatabase db, CharacterModel character) {
+    public long addCharacter(CharacterModel character) {
+        checkDB();
 
 
         // Creating content values
@@ -318,24 +326,33 @@ public class SQLHelper extends SQLiteOpenHelper {
         values.put(CHARACTER_LEVEL, character.level);
         values.put(CHARACTER_CLASS, character.getClassName());
         values.put(CHARACTER_XP, character.xp);
-        values.put(CHARACTER_ALIGN, character.alignment.id);
+        values.put(CHARACTER_ALIGN, character.getAlignmentId());
+        values.put(CHARACTER_AC, character.ac);
+        values.put(CHARACTER_STR, character.str);
+        values.put(CHARACTER_CON, character.con);
+        values.put(CHARACTER_DEX, character.dex);
+        values.put(CHARACTER_WIS, character.wis);
+        values.put(CHARACTER_INT, character.intel);
+        values.put(CHARACTER_CHR, character.chr);
 
         // insert row in characters table
 
-        long insert = db.insert(TABLE_CHARACTERS, null, values);
+        long i =  db.insert(TABLE_CHARACTERS, null, values);
+        System.out.println("add character long result = " + i);
+        return i;
 
-        return insert;
+
     }
 
     /**
      * Used to get detail of all characters and save in array list of data type
      * CharacterModel
      *
-     * @return
+     * @return charactersArrayList
      */
     public List<CharacterModel> getAllCharactersList() {
         List<CharacterModel> charactersArrayList = new ArrayList<CharacterModel>();
-        SQLiteDatabase db = this.getReadableDatabase();
+        checkDB();
         String selectQuery = "SELECT  * FROM " + TABLE_CHARACTERS;
         Log.d(TAG, selectQuery);
 
@@ -349,7 +366,7 @@ public class SQLHelper extends SQLiteOpenHelper {
                 CharacterModel character = new CharacterModel();
                 character.id = c.getInt(c.getColumnIndex(CHARACTER_ID));
                 character.name = c.getString(c.getColumnIndex(CHARACTER_NAME));
-                character.characterClassModel = getCharacterClass(db, c.getString(c.getColumnIndex(CHARACTER_CLASS)));
+                character.characterClassModel = getCharacterClass(c.getString(c.getColumnIndex(CHARACTER_CLASS)));
                 character.ac = c.getInt(c.getColumnIndex(CHARACTER_AC));
                 character.str = c.getInt(c.getColumnIndex(CHARACTER_STR));
                 character.con = c.getInt(c.getColumnIndex(CHARACTER_CON));
@@ -359,6 +376,7 @@ public class SQLHelper extends SQLiteOpenHelper {
                 character.chr = c.getInt(c.getColumnIndex(CHARACTER_CHR));
                 character.level = c.getInt(c.getColumnIndex(CHARACTER_LEVEL));
                 character.xp = c.getInt(c.getColumnIndex(CHARACTER_XP));
+                character.setAlignment(getAlignment(c.getInt(c.getColumnIndex(CHARACTER_ALIGN))));
 
                 // adding to Students list
                 charactersArrayList.add(character);
@@ -369,7 +387,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     }
 
     public CharacterModel getCharacter(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        checkDB();
         String selectQuery = "SELECT  * FROM " + TABLE_CHARACTERS + " WHERE " + CHARACTER_ID + " = '" + id + "'";
         Log.d(TAG, selectQuery);
         Cursor c = db.rawQuery(selectQuery, null);
@@ -383,8 +401,9 @@ public class SQLHelper extends SQLiteOpenHelper {
         CharacterModel character = new CharacterModel();
         character.id = c.getInt(c.getColumnIndex(CHARACTER_ID));
         character.name = c.getString(c.getColumnIndex(CHARACTER_NAME));
-        character.characterClassModel = getCharacterClass(db, c.getString(c.getColumnIndex(CHARACTER_CLASS)));
-        character.alignment = getAlignment(db, (c.getColumnIndex(CHARACTER_ALIGN)));
+        character.characterClassModel = getCharacterClass(c.getString(c.getColumnIndex(CHARACTER_CLASS)));
+        character.setAlignment(getAlignment((c.getInt(c.getColumnIndex(CHARACTER_ALIGN)))));
+
         character.ac = c.getInt(c.getColumnIndex(CHARACTER_AC));
         character.str = c.getInt(c.getColumnIndex(CHARACTER_STR));
         character.con = c.getInt(c.getColumnIndex(CHARACTER_CON));
@@ -409,8 +428,7 @@ public class SQLHelper extends SQLiteOpenHelper {
                     weapon.dmg = w.getString(w.getColumnIndex(WEAPON_DAMAGE));
                     weapon.dmgType = w.getString(w.getColumnIndex(WEAPON_TYPE));
                     character.addItem(weapon);
-                }
-                else {
+                } else {
                     ItemModel item = new ItemModel();
                     item.id = w.getInt(w.getColumnIndex(ITEM_ID));
                     item.ownerid = w.getInt(w.getColumnIndex(OWNER_ID));
@@ -428,7 +446,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     public List<CharacterClassModel> getAllClassList() {
         List<CharacterClassModel> classArrayList = new ArrayList<CharacterClassModel>();
-        SQLiteDatabase db = this.getReadableDatabase();
+        checkDB();
         String selectQuery = "SELECT  * FROM " + TABLE_CHARACTER_CLASSES;
         Log.d(TAG, selectQuery);
 
@@ -453,7 +471,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     public List<Alignment> getAllAlignList() {
         List<Alignment> alignArrayList = new ArrayList<Alignment>();
-        SQLiteDatabase db = this.getReadableDatabase();
+        checkDB();
         String selectQuery = "SELECT  * FROM " + TABLE_ALIGNMENTS;
         Log.d(TAG, selectQuery);
 
@@ -464,15 +482,52 @@ public class SQLHelper extends SQLiteOpenHelper {
         if (c.moveToFirst()) {
             do {
 
-                Alignment alignment = new Alignment();
-                alignment.id = c.getInt(c.getColumnIndex(ALIGNMENT_ID));
-                alignment.name = c.getString(c.getColumnIndex(ALIGNMENT_NAME));
 
+                int alignId = c.getInt(c.getColumnIndex(ALIGNMENT_ID));
+                String name = c.getString(c.getColumnIndex(ALIGNMENT_NAME));
+                Alignment alignment = new Alignment(alignId, name);
                 // adding to list
                 alignArrayList.add(alignment);
             } while (c.moveToNext());
         }
         c.close();
         return alignArrayList;
+    }
+
+    public long updateCharacter(CharacterModel character) {
+        checkDB();
+        ContentValues values = new ContentValues();
+        values.put(CHARACTER_NAME, character.name);
+        values.put(CHARACTER_TEXT, character.text);
+        values.put(CHARACTER_LEVEL, character.level);
+        values.put(CHARACTER_CLASS, character.getClassName());
+        values.put(CHARACTER_XP, character.xp);
+        values.put(CHARACTER_ALIGN, character.getAlignmentId());
+        values.put(CHARACTER_AC, character.ac);
+        values.put(CHARACTER_STR, character.str);
+        values.put(CHARACTER_CON, character.con);
+        values.put(CHARACTER_DEX, character.dex);
+        values.put(CHARACTER_WIS, character.wis);
+        values.put(CHARACTER_INT, character.intel);
+        values.put(CHARACTER_CHR, character.chr);
+        return db.update(TABLE_CHARACTERS, values, "id=" + character.id, null);
+    }
+
+    public long updateWeapon(WeaponModel weapon) {
+        checkDB();
+        ContentValues values = new ContentValues();
+        values.put(ITEM_NAME, weapon.name);
+        values.put(ITEM_TEXT, weapon.text);
+        values.put(WEAPON_ATTACK, weapon.atk);
+        values.put(WEAPON_DAMAGE, weapon.dmg);
+        values.put(WEAPON_TYPE, weapon.dmgType);
+
+        return db.update(TABLE_ITEMS, values, "id=" + weapon.id, null);
+    }
+
+    private void checkDB() {
+        if (db == null || !db.isOpen()) {
+            db = this.getReadableDatabase();
+        }
     }
 }

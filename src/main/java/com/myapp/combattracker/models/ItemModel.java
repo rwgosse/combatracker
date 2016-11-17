@@ -24,19 +24,15 @@ public class ItemModel {
         this.text = text;
     }
 
-    public ItemModel(){
+    public ItemModel() {
 
     }
 
-    public ItemModel(int ownerid, String name, String text){
+    public ItemModel(int ownerid, String name, String text) {
         this.ownerid = ownerid;
         this.name = name;
         this.text = text;
     }
-
-
-
-
 
 
     public String toString() {

@@ -2,8 +2,6 @@ package com.myapp.combattracker;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by Richard on 2016-10-26.
  */
