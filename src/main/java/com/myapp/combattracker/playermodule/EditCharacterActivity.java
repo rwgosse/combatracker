@@ -49,6 +49,8 @@ public class EditCharacterActivity extends AppCompatActivity {
     private Intent mIntent;
     private SQLiteDatabase db;
     private ArrayList<WeaponModel> weapons;
+    private CharacterModel character;
+    private WeaponModel tempWeapon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,11 @@ public class EditCharacterActivity extends AppCompatActivity {
         db = sqlHelper.getWritableDatabase();
         weapons = new ArrayList<WeaponModel>();
         loadViews();
+        populate();
+
+    }
+
+    private void populate() {
         populate_alignment_spinner();
         populate_class_spinner();
         mIntent = getIntent();
@@ -69,6 +76,12 @@ public class EditCharacterActivity extends AppCompatActivity {
         } else {
             newCharacter();
         }
+    }
+
+    @Override
+    public void onResume() {  // After a pause OR at startup
+        super.onResume();
+        populate();
 
     }
 
@@ -80,13 +93,13 @@ public class EditCharacterActivity extends AppCompatActivity {
         text_xp.setText(String.valueOf(0));
         //spin_align.setSelection(character.alignment.id);
         //populate_attack_listview(character);
-        textView_acbox.setText(String.valueOf(PlayerHelper.roll(3, 6)));
-        textView_strstat.setText(String.valueOf(PlayerHelper.roll(3, 6)));
-        textView_dexstat.setText(String.valueOf(PlayerHelper.roll(3, 6)));
-        textView_constat.setText(String.valueOf(PlayerHelper.roll(3, 6)));
-        textView_wisstat.setText(String.valueOf(PlayerHelper.roll(3, 6)));
-        textView_intstat.setText(String.valueOf(PlayerHelper.roll(3, 6)));
-        textView_chrstat.setText(String.valueOf(PlayerHelper.roll(3, 6)));
+        textView_acbox.setText(String.valueOf(PlayerHelper.generateStat()));
+        textView_strstat.setText(String.valueOf(PlayerHelper.generateStat()));
+        textView_dexstat.setText(String.valueOf(PlayerHelper.generateStat()));
+        textView_constat.setText(String.valueOf(PlayerHelper.generateStat()));
+        textView_wisstat.setText(String.valueOf(PlayerHelper.generateStat()));
+        textView_intstat.setText(String.valueOf(PlayerHelper.generateStat()));
+        textView_chrstat.setText(String.valueOf(PlayerHelper.generateStat()));
         populate_attack_listview();
     }
 
@@ -119,12 +132,19 @@ public class EditCharacterActivity extends AppCompatActivity {
                 System.out.println("clicked " + position + " value = " + value);
                 try {
                     System.out.println("relates to: " + weapons.get(position));
-                    int clickedWeaponID = weapons.get(position).id;
+                    tempWeapon  = weapons.get(position);
+                    int clickedWeaponID = tempWeapon.id;
                     System.out.println("db weapons id = " + clickedWeaponID);
                     Intent myIntent = new Intent(getApplicationContext(), EditItemActivity.class);
                     myIntent.putExtra("weapon_id", clickedWeaponID);
                     startActivity((myIntent));
                 } catch ( IndexOutOfBoundsException e ) {
+                    if (!isNew && value.equals("none")) {
+                        newWeaponDialog("Create a New Weapon?");
+
+                    }
+
+
                     // do nothing
                 }
                 // assuming string and if you want to get the value on click of list item
@@ -135,7 +155,7 @@ public class EditCharacterActivity extends AppCompatActivity {
 
     private void loadCharacter() {
         int intValue = mIntent.getIntExtra("character_id", 0);
-        CharacterModel character = sqlHelper.getCharacter(intValue);
+        character = sqlHelper.getCharacter(intValue);
         text_name.setText(character.name);
         spin_class.setSelection(character.characterClassModel.id - 1);
         text_level.setText(String.valueOf(character.level));
@@ -312,6 +332,30 @@ public class EditCharacterActivity extends AppCompatActivity {
                         if (saved) {
                             finish();
                         }
+                    }
+                }).show();
+    }
+
+
+    private void newWeaponDialog(String message) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+
+        dialog.setTitle("Combat Tracker")
+                //.setIcon(R.drawable.ic_launcher)
+                .setMessage(message)
+                  .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                      public void onClick(DialogInterface dialoginterface, int i) {
+                         dialoginterface.cancel();
+                          }})
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialoginterface, int i) {
+
+
+                        Intent myIntent = new Intent(getApplicationContext(), EditItemActivity.class);
+                        myIntent.putExtra("character_id", character.id);
+
+
+                        startActivity((myIntent));
                     }
                 }).show();
     }

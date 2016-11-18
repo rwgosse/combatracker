@@ -139,7 +139,14 @@ public class CharacterModel {
 
 
     public int getUnarmedStrikeDMG() {
-        return 1 + PlayerHelper.getModifier(str);
+        int damage = 1 + PlayerHelper.getModifier(str);
+        if (damage >= 1) {
+            return damage;
+        }
+        else {
+            return 1;
+        }
+
 
     }
 

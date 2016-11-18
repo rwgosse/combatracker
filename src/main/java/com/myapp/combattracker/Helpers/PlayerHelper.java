@@ -26,7 +26,19 @@ public final class PlayerHelper {
         int roll4 = roll(1, 6);
 
         int sum = roll1 + roll2 + roll3 + roll4;
-        sum = sum - Math.min(roll1, Math.min(roll2, Math.min(roll3, roll4)));
+        //sum = sum - Math.min(roll1, Math.min(roll2, Math.min(roll3, roll4)));
+        //sum = sum - Math.min(Math.min(Math.min(roll1, roll2),roll3), roll4);
+
+        int smallest = roll1;
+        if (smallest > roll2) smallest = roll2;
+        if (smallest > roll3) smallest = roll3;
+        if (smallest > roll4) smallest = roll4;
+
+        sum = sum - smallest;
+
+
+
+
         return sum;
 
 

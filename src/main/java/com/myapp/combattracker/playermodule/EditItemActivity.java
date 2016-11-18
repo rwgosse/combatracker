@@ -1,5 +1,7 @@
 package com.myapp.combattracker.playermodule;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +24,8 @@ public class EditItemActivity extends AppCompatActivity {
     private EditText atk;
     private EditText dmg;
     private EditText type;
+    private WeaponModel weapon;
+    private boolean isNew = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,7 @@ public class EditItemActivity extends AppCompatActivity {
         atk = (EditText) findViewById(R.id.editTextAtk);
         dmg  = (EditText) findViewById(R.id.editTextDmg);
         type = (EditText) findViewById(R.id.editTextType);
+
         populate();
 
 
@@ -41,8 +46,31 @@ public class EditItemActivity extends AppCompatActivity {
 
     private void populate() {
         mIntent = getIntent();
+        if (mIntent.hasExtra("weapon_id")) {
+            isNew = false;
+            loadWeapon();
+        } else {
+            newWeapon();
+        }
+
+
+
+    }
+
+    private void newWeapon() {
+        System.out.println("create Weapon");
+        name.setHint("Name");
+        description.setHint("Description");
+        atk.setText(Integer.toString(0));
+        dmg.setText("1d6");
+        type.setHint("Damage Type");
+
+
+    }
+
+    private void loadWeapon() {
         int intValue = mIntent.getIntExtra("weapon_id", 0);
-        WeaponModel weapon = sqlHelper.getItem(intValue);
+        weapon = sqlHelper.getItem(intValue);
         System.out.println("got Weapon: " + weapon);
         name.setText(weapon.name);
         description.setText(weapon.text);
@@ -53,6 +81,70 @@ public class EditItemActivity extends AppCompatActivity {
 
     public void click_cancel(View view) {
        finish();
+    }
+
+    public void click_save(View view) {
+        sqlHelper.getReadableDatabase();
+        String weaponName = name.getText().toString();
+        String weaponText = description.getText().toString();
+        int weaponAtk;
+        try {
+            weaponAtk = Integer.parseInt(atk.getText().toString());
+        }
+        catch(NumberFormatException e) {
+            weaponAtk = 0;
+        }
+        String weaponDmg = dmg.getText().toString();
+        String weaponType = type.getText().toString();
+
+
+        if (!weaponName.isEmpty() && !weaponText.isEmpty() && weaponAtk >= 0 && weaponDmg.matches("\\d*d\\d*") && !weaponType.isEmpty()) {
+
+            if (!isNew) {
+                weapon.name = weaponName;
+                weapon.text = weaponText;
+                weapon.atk = weaponAtk;
+                weapon.dmg = weaponDmg;
+                weapon.dmgType = weaponType;
+                sqlHelper.updateWeapon(weapon);
+            }
+            else {
+                int characterID = 0;
+
+                    characterID = mIntent.getIntExtra("character_id", 0);
+
+                WeaponModel newWeapon = new WeaponModel(characterID, weaponName, weaponText, weaponAtk, weaponDmg, weaponType);
+                sqlHelper.addItem(newWeapon);
+            }
+
+
+
+
+            alertView(true, "Weapon Saved");
+
+
+        } else {
+            // unfilled fields
+            alertView(false, "Please complete all fields");
+        }
+    }
+    private void alertView(final boolean saved, String message) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+
+        dialog.setTitle("Combat Tracker")
+                //.setIcon(R.drawable.ic_launcher)
+                .setMessage(message)
+                //  .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                //      public void onClick(DialogInterface dialoginterface, int i) {
+                //          dialoginterface.cancel();
+                //          }})
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialoginterface, int i) {
+                        if (saved) {
+                            finish();
+                        }
+                    }
+                }).show();
     }
 
 

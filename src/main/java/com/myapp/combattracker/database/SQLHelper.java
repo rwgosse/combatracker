@@ -222,7 +222,7 @@ public class SQLHelper extends SQLiteOpenHelper {
         // Creating content values
         ContentValues values = new ContentValues();
         values.put(ITEM_NAME, item.name);
-        values.put(ITEM_TEXT, item.name);
+        values.put(ITEM_TEXT, item.text);
         values.put(OWNER_ID, item.ownerid);
 
         if (item instanceof WeaponModel) {
@@ -233,8 +233,7 @@ public class SQLHelper extends SQLiteOpenHelper {
         } else values.put(ITEM_TYPE, "item");
         // insert row in table
 
-        return  db.insert(TABLE_ITEMS, null, values);
-
+        return db.insert(TABLE_ITEMS, null, values);
 
     }
 

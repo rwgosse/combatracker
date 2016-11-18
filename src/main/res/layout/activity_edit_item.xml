@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
+
         android:ems="10"
         android:layout_below="@+id/textViewName"
         android:layout_alignParentEnd="true"
@@ -38,28 +38,41 @@
         android:id="@+id/textViewDescription"
         android:layout_below="@+id/editTextName"/>
 
-    <EditText
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
+        android:layout_below="@+id/textViewDescription"
+
+        android:id="@+id/layout_description">
+
+    <EditText
+        android:inputType="textMultiLine"
+        android:padding="10dp"
+        android:lines="6"
+        android:minLines="6"
+        android:gravity="top|left"
+        android:maxLines="6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/customborder"
+
         android:ems="10"
         android:id="@+id/editTextDescription"
-        android:layout_below="@+id/textViewDescription"/>
-
+        />
+</RelativeLayout>
     <TextView
         android:text="Attack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textViewAtk"
-        android:layout_below="@+id/editTextDescription"/>
+        android:layout_below="@+id/layout_description"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:text="Attack"
+
         android:id="@+id/editTextAtk"
         android:layout_below="@+id/textViewAtk"/>
 
@@ -73,9 +86,9 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
+        android:inputType="textPersonName"
         android:ems="10"
-        android:text="Damage"
+
         android:id="@+id/editTextDmg"
         android:layout_below="@+id/textViewDmg"/>
 
@@ -90,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Damage Type"
+
         android:ems="10"
         android:id="@+id/editTextType"
         android:layout_below="@+id/textViewType"/>
@@ -100,6 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonSave"
+        android:onClick="click_save"
         android:layout_below="@+id/editTextType"/>
 
     <Button
