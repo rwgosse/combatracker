@@ -1,23 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="horizontal">
 
+
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/main_buttons">
     <Button
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/button_player"
-        android:onClick="click_player_home" />
+        android:onClick="click_player_home"
+        android:textSize="5sp"/>
+
+
 
     <Button
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/button_dungeon_master"
-        android:onClick="click_dm_home" />
+        android:onClick="click_dm_home"
+        android:textSize="5sp"/>
+
 
 
 </LinearLayout>
+    <TextView
+        android:text="Coded by Richard Gosse for COMP 7081"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+
+
+
+        />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>
