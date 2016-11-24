@@ -67,6 +67,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:onClick="acOnClick"
+        android:clickable="true"
+
         >
 
     <TextView
@@ -110,7 +113,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_ac"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dip">
+        android:layout_marginBottom="5dip"
+        android:onClick="strOnClick"
+        android:clickable="true">
     <TextView
         android:text="STR"
         android:layout_width="wrap_content"
@@ -135,7 +140,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_str"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dip">
+        android:layout_marginBottom="5dip"
+        android:onClick="conOnClick"
+        android:clickable="true">
     <TextView
         android:text="CON"
         android:layout_width="wrap_content"
@@ -159,7 +166,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_con"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dip">
+        android:layout_marginBottom="5dip"
+        android:onClick="dexOnClick"
+        android:clickable="true">
     <TextView
         android:text="DEX"
         android:layout_width="wrap_content"
@@ -172,7 +181,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView_dex"
         android:id="@+id/textView_dexstat"
-
         android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
@@ -182,7 +190,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_dex"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dip">
+        android:layout_marginBottom="5dip"
+        android:onClick="wizOnClick"
+        android:clickable="true">
     <TextView
         android:text="WIZ"
         android:layout_width="wrap_content"
@@ -206,7 +216,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_wiz"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dip">
+        android:layout_marginBottom="5dip"
+        android:onClick="intOnClick"
+        android:clickable="true">
 
     <TextView
         android:text="INT"
@@ -232,7 +244,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_int"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dip">
+        android:layout_marginBottom="5dip"
+        android:onClick="chrOnClick"
+        android:clickable="true">
 
 
     <TextView

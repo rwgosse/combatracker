@@ -12,24 +12,34 @@
         android:layout_centerVertical="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/main_buttons">
+        android:id="@+id/main_buttons"
+        style="?android:attr/buttonBarStyle"
+        android:orientation="horizontal"
+        >
     <Button
-        android:layout_weight="1"
-        android:layout_width="0dp"
+        android:layout_weight="1.0"
+        android:layout_width="0.0dip"
         android:layout_height="wrap_content"
         android:text="@string/button_player"
+
         android:onClick="click_player_home"
-        android:textSize="5sp"/>
+        android:textSize="15sp"
+        style="?android:attr/buttonBarButtonStyle"
+        android:background="?android:attr/selectableItemBackground"/>
 
 
 
     <Button
-        android:layout_weight="1"
-        android:layout_width="0dp"
+        android:layout_weight="1.0"
+        android:layout_width="0.0dip"
+
         android:layout_height="wrap_content"
         android:text="@string/button_dungeon_master"
+
         android:onClick="click_dm_home"
-        android:textSize="5sp"/>
+        android:textSize="15sp"
+        style="?android:attr/buttonBarButtonStyle"
+        android:background="?android:attr/selectableItemBackground"/>
 
 
 
@@ -46,13 +56,6 @@
 
         />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+
 
 </RelativeLayout>

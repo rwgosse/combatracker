@@ -3,19 +3,21 @@ package com.myapp.combattracker.playermodule;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AdapterView;
-import android.widget.AdapterView.*;
 
 import com.myapp.combattracker.Helpers.PlayerHelper;
 import com.myapp.combattracker.R;
@@ -51,6 +53,7 @@ public class EditCharacterActivity extends AppCompatActivity {
     private ArrayList<WeaponModel> weapons;
     private CharacterModel character;
     private WeaponModel tempWeapon;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,23 +125,21 @@ public class EditCharacterActivity extends AppCompatActivity {
     }
 
     private void attackClicker() {
-        lv.setOnItemClickListener(new OnItemClickListener()
-        {
+        lv.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
-                                    long arg3)
-            {
-                String value = (String)adapter.getItemAtPosition(position);
+                                    long arg3) {
+                String value = (String) adapter.getItemAtPosition(position);
                 System.out.println("clicked " + position + " value = " + value);
                 try {
                     System.out.println("relates to: " + weapons.get(position));
-                    tempWeapon  = weapons.get(position);
+                    tempWeapon = weapons.get(position);
                     int clickedWeaponID = tempWeapon.id;
                     System.out.println("db weapons id = " + clickedWeaponID);
                     Intent myIntent = new Intent(getApplicationContext(), EditItemActivity.class);
                     myIntent.putExtra("weapon_id", clickedWeaponID);
                     startActivity((myIntent));
-                } catch ( IndexOutOfBoundsException e ) {
+                } catch (IndexOutOfBoundsException e) {
                     if (!isNew && value.equals("none")) {
                         newWeaponDialog("Create a New Weapon?");
 
@@ -257,8 +258,7 @@ public class EditCharacterActivity extends AppCompatActivity {
             String symbol = " ";
             if (modifier < 0) {
                 //do nothing
-            }
-            else {
+            } else {
                 symbol = " +";
             }
             attackList.add("Unarmed" + symbol + PlayerHelper.getModifier(characterModel.dex) + "   " + characterModel.getUnarmedStrikeDMG() + " " + "Bludgeoning");
@@ -298,12 +298,12 @@ public class EditCharacterActivity extends AppCompatActivity {
                 && ac > 0 && str > 0 && dex > 0 && con > 0 && wis > 0 && intel > 0 && chr > 0) {
 
             if (isNew) {
-                CharacterModel newCharacter = new CharacterModel(name, "", characterClass, alignment, level, xp, ac, str, dex, con, wis, intel, chr);
+                CharacterModel newCharacter = new CharacterModel(name, "", characterClass, alignment, level, xp, ac, str, con, dex, wis, intel, chr);
                 sqlHelper.addCharacter(newCharacter);
             } else {
                 // existing character;
                 int id = mIntent.getIntExtra("character_id", 0);
-                CharacterModel oldCharacter = new CharacterModel(id, name, "", characterClass, alignment, level, xp, ac, str, dex, con, wis, intel, chr);
+                CharacterModel oldCharacter = new CharacterModel(id, name, "", characterClass, alignment, level, xp, ac, str, con, dex, wis, intel, chr);
                 sqlHelper.updateCharacter(oldCharacter);
             }
             alertView(true, "Character Saved");
@@ -343,10 +343,11 @@ public class EditCharacterActivity extends AppCompatActivity {
         dialog.setTitle("Combat Tracker")
                 //.setIcon(R.drawable.ic_launcher)
                 .setMessage(message)
-                  .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                      public void onClick(DialogInterface dialoginterface, int i) {
-                         dialoginterface.cancel();
-                          }})
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialoginterface, int i) {
+                        dialoginterface.cancel();
+                    }
+                })
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialoginterface, int i) {
 
@@ -361,4 +362,67 @@ public class EditCharacterActivity extends AppCompatActivity {
     }
 
 
+    public void acOnClick(View view) {
+        editStat(view, textView_acbox);
+    }
+
+    public void strOnClick(View view) {
+        editStat(view, textView_strstat);
+    }
+
+    public void conOnClick(View view) {
+        editStat(view, textView_constat);
+    }
+
+    public void dexOnClick(View view) {
+        editStat(view, textView_dexstat);
+    }
+
+    public void wizOnClick(View view) {
+        editStat(view, textView_wisstat);
+    }
+
+    public void intOnClick(View view) {
+        editStat(view, textView_intstat);
+    }
+
+    public void chrOnClick(View view) {
+        editStat(view, textView_chrstat);
+    }
+
+    public void editStat(View view, final TextView statView) {
+
+        if (!isNew) {
+            String currentValue = statView.getText().toString();
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Enter Stat Value");
+            final EditText input = new EditText(this);
+            input.setInputType(InputType.TYPE_CLASS_NUMBER);
+            input.setRawInputType(Configuration.KEYBOARD_12KEY);
+            input.setHint(currentValue);
+            alert.setView(input);
+            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    String ed_text = input.getText().toString().trim();
+                    if (ed_text.isEmpty() || ed_text.length() == 0 || ed_text.equals("") || ed_text == null) {
+                        // do nothing
+                    } else {
+                        statView.setText(ed_text);
+                    }
+                }
+            });
+            alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //Put actions for CANCEL button here, or leave in blank
+                }
+            });
+            alert.show();
+        } else {
+            //character is new, do nothing
+        }
+
+    }
+
+
 }
+
