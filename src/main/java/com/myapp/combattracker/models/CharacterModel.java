@@ -137,6 +137,10 @@ public class CharacterModel {
 
     }
 
+    public ArrayList<ItemModel> getInventory() {
+        return inventory;
+    }
+
 
     public int getUnarmedStrikeDMG() {
         int damage = 1 + PlayerHelper.getModifier(str);

@@ -8,7 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.myapp.combattracker.playermodule.EditCharacterActivity">
+    tools:context="com.myapp.combattracker.playermodule.EditCharacterActivity"
+    android:background="@drawable/scroll1">
 
 
     <TextView
@@ -324,6 +325,16 @@
         android:layout_centerHorizontal="true"
         android:onClick="click_save" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_inventory"
+        android:text="Inventory"
+        android:layout_below="@+id/layout_attacks"
+        android:layout_toRightOf="@+id/button_save"
+        android:layout_centerHorizontal="true"
+        android:onClick="click_inventory" />
+
 
     <RelativeLayout
         android:id="@+id/layout_attacks"
@@ -362,8 +373,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/listView_attacks"
             android:layout_below="@id/textView_atkheader"
-            android:clickable="false"
-            android:contextClickable="false"></ListView>
+            android:clickable="false" />
 
 
     </RelativeLayout>

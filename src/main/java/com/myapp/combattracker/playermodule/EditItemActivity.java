@@ -7,11 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.EditText;
 
 import com.myapp.combattracker.R;
 import com.myapp.combattracker.models.CharacterModel;
 import com.myapp.combattracker.models.WeaponModel;
+import com.myapp.combattracker.models.ItemModel;
 import com.myapp.combattracker.database.SQLHelper;
 
 
@@ -24,8 +26,13 @@ public class EditItemActivity extends AppCompatActivity {
     private EditText atk;
     private EditText dmg;
     private EditText type;
-    private WeaponModel weapon;
+    private ItemModel item;
+    private ItemModel gotItem;
     private boolean isNew = true;
+    private boolean isWeapon = false;
+    private TextView textAtk;
+    private TextView textDmg;
+    private TextView textType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +42,19 @@ public class EditItemActivity extends AppCompatActivity {
         sqlHelper = new SQLHelper(getApplicationContext());
         name = (EditText) findViewById(R.id.editTextName);
         description = (EditText) findViewById(R.id.editTextDescription);
-        atk = (EditText) findViewById(R.id.editTextAtk);
-        dmg  = (EditText) findViewById(R.id.editTextDmg);
-        type = (EditText) findViewById(R.id.editTextType);
+
+
+            atk = (EditText) findViewById(R.id.editTextAtk);
+            dmg = (EditText) findViewById(R.id.editTextDmg);
+            type = (EditText) findViewById(R.id.editTextType);
+
+        textAtk = (TextView) findViewById(R.id.textViewAtk);
+        textDmg = (TextView) findViewById(R.id.textViewDmg);
+        textType = (TextView) findViewById(R.id.textViewType);
+
+
+
+
 
         populate();
 
@@ -46,7 +63,7 @@ public class EditItemActivity extends AppCompatActivity {
 
     private void populate() {
         mIntent = getIntent();
-        if (mIntent.hasExtra("weapon_id")) {
+        if (mIntent.hasExtra("item_id")) {
             isNew = false;
             loadWeapon();
         } else {
@@ -61,22 +78,42 @@ public class EditItemActivity extends AppCompatActivity {
         System.out.println("create Weapon");
         name.setHint("Name");
         description.setHint("Description");
-        atk.setText(Integer.toString(0));
-        dmg.setText("1d6");
-        type.setHint("Damage Type");
+        if(isWeapon) {
+            atk.setText(Integer.toString(0));
+            dmg.setText("1d6");
+            type.setHint("Damage Type");
+        }
 
 
     }
 
     private void loadWeapon() {
-        int intValue = mIntent.getIntExtra("weapon_id", 0);
-        weapon = sqlHelper.getItem(intValue);
-        System.out.println("got Weapon: " + weapon);
-        name.setText(weapon.name);
-        description.setText(weapon.text);
-        atk.setText(Integer.toString(weapon.atk));
-        dmg.setText(weapon.dmg);
-        type.setText(weapon.dmgType);
+        int intValue = mIntent.getIntExtra("item_id", 0);
+        gotItem = sqlHelper.getItem(intValue);
+        if (gotItem instanceof WeaponModel) {
+            isWeapon = true;
+        }
+        item = gotItem;
+        if(!isWeapon){
+            atk.setVisibility(View.GONE);
+            dmg.setVisibility(View.GONE);
+            type.setVisibility(View.GONE);
+            textAtk.setVisibility(View.GONE);
+            textDmg.setVisibility(View.GONE);
+            textType.setVisibility(View.GONE);
+        }
+        System.out.println("got item: " + item);
+        name.setText(item.name);
+        description.setText(item.text);
+        if(isWeapon) {
+            setWeaponFields((WeaponModel) item);
+        }
+    }
+
+    private void setWeaponFields(WeaponModel item) {
+        atk.setText(Integer.toString(item.atk));
+        dmg.setText(item.dmg);
+        type.setText(item.dmgType);
     }
 
     public void click_cancel(View view) {
@@ -87,26 +124,34 @@ public class EditItemActivity extends AppCompatActivity {
         sqlHelper.getReadableDatabase();
         String weaponName = name.getText().toString();
         String weaponText = description.getText().toString();
-        int weaponAtk;
-        try {
-            weaponAtk = Integer.parseInt(atk.getText().toString());
+        int weaponAtk = -1;
+        String weaponDmg = null;
+        String weaponType = null;
+        if(isWeapon) {
+
+            try {
+                weaponAtk = Integer.parseInt(atk.getText().toString());
+            } catch (NumberFormatException e) {
+                weaponAtk = 0;
+            }
+            weaponDmg = dmg.getText().toString();
+            weaponType = type.getText().toString();
         }
-        catch(NumberFormatException e) {
-            weaponAtk = 0;
-        }
-        String weaponDmg = dmg.getText().toString();
-        String weaponType = type.getText().toString();
 
 
-        if (!weaponName.isEmpty() && !weaponText.isEmpty() && weaponAtk >= 0 && weaponDmg.matches("\\d*d\\d*") && !weaponType.isEmpty()) {
+        if (((!weaponName.isEmpty() && !weaponText.isEmpty() && weaponAtk >= 0 && weaponDmg.matches("\\d*d\\d*") && !weaponType.isEmpty()))
+                || (!isWeapon && !weaponName.isEmpty() && !weaponText.isEmpty())) {
 
             if (!isNew) {
-                weapon.name = weaponName;
-                weapon.text = weaponText;
-                weapon.atk = weaponAtk;
-                weapon.dmg = weaponDmg;
-                weapon.dmgType = weaponType;
-                sqlHelper.updateWeapon(weapon);
+                item.name = weaponName;
+                item.text = weaponText;
+                if(isWeapon) {
+                    updateWeaponStats((WeaponModel)item, weaponAtk, weaponDmg, weaponType);
+                    sqlHelper.updateItem((WeaponModel)item);
+                }
+                else {
+                    sqlHelper.updateItem(item);
+                }
             }
             else {
                 int characterID = 0;
@@ -120,7 +165,7 @@ public class EditItemActivity extends AppCompatActivity {
 
 
 
-            alertView(true, "Weapon Saved");
+            alertView(true, "Item Saved");
 
 
         } else {
@@ -128,6 +173,13 @@ public class EditItemActivity extends AppCompatActivity {
             alertView(false, "Please complete all fields");
         }
     }
+
+    private void updateWeaponStats(WeaponModel item, int weaponAtk, String weaponDmg, String weaponType) {
+        item.atk = weaponAtk;
+        item.dmg = weaponDmg;
+        item.dmgType = weaponType;
+    }
+
     private void alertView(final boolean saved, String message) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 

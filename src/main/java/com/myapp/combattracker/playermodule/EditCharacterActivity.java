@@ -26,6 +26,7 @@ import com.myapp.combattracker.models.Alignment;
 import com.myapp.combattracker.models.CharacterClassModel;
 import com.myapp.combattracker.models.CharacterModel;
 import com.myapp.combattracker.models.WeaponModel;
+import com.myapp.combattracker.models.ItemModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -424,5 +425,11 @@ public class EditCharacterActivity extends AppCompatActivity {
     }
 
 
+    public void click_inventory(View view) {
+        Intent myIntent = new Intent(this, EditInventoryActivity.class);
+        myIntent.putExtra("character_id", character.id);
+        startActivity((myIntent));
+
+    }
 }
 

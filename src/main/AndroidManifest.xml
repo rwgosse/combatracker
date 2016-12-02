@@ -7,20 +7,26 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-
-    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:windowSoftInputMode="stateHidden|adjustResize">
-
-        <activity android:name="com.myapp.combattracker.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.myapp.combattracker.dmmodule.DmHomeActivity" />
-        <activity android:name="com.myapp.combattracker.playermodule.EditCharacterActivity" />
-        <activity android:name="com.myapp.combattracker.playermodule.PlayerHomeActivity"/>
-        <activity android:name="com.myapp.combattracker.playermodule.EditItemActivity"/>
+        <activity android:name=".dmmodule.DmHomeActivity" />
+        <activity android:name=".playermodule.EditCharacterActivity" />
+        <activity android:name=".playermodule.PlayerHomeActivity" />
+        <activity android:name=".playermodule.EditItemActivity" />
+
+        <instrumentation
+            android:name="android.test.InstrumentationTestRunner"
+            android:label="Tests for com.example.YourClass"
+            android:targetPackage="com.myapp.combattracker" />
+
+        <activity android:name=".playermodule.EditInventoryActivity"></activity>
     </application>
 
 </manifest>

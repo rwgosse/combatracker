@@ -24,7 +24,7 @@ import java.util.List;
 public class SQLHelper extends SQLiteOpenHelper {
 
     // Current version of database
-    private static final int DATABASE_VERSION = 28;
+    private static final int DATABASE_VERSION = 29;
     // Characters Table
     private static final String TABLE_CHARACTERS = "characters";
     private static final String CHARACTER_ID = "id";
@@ -284,7 +284,8 @@ public class SQLHelper extends SQLiteOpenHelper {
         return alignment;
     }
 
-    public WeaponModel getItem(int id) {
+    public ItemModel getItem(int id) {
+        ItemModel item;
         System.out.println("getWeapon param = " + id);
         checkDB();
         String selectQuery = "SELECT * FROM " + TABLE_ITEMS + " WHERE "
@@ -294,16 +295,22 @@ public class SQLHelper extends SQLiteOpenHelper {
         if (c != null)
             c.moveToFirst();
 
-        int weaponId = c.getInt(c.getColumnIndex(ITEM_ID));
+        int itemId = c.getInt(c.getColumnIndex(ITEM_ID));
         int ownerId = c.getInt(c.getColumnIndex(OWNER_ID));
-        String weaponName = c.getString(c.getColumnIndex(ITEM_NAME));
-        String weapontext = c.getString(c.getColumnIndex(ITEM_TEXT));
+        String itemName = c.getString(c.getColumnIndex(ITEM_NAME));
+        String itemtext = c.getString(c.getColumnIndex(ITEM_TEXT));
         int atk = c.getInt(c.getColumnIndex(WEAPON_ATTACK));
         String dmg = c.getString(c.getColumnIndex(WEAPON_DAMAGE));
         String dmgType = c.getString(c.getColumnIndex(WEAPON_TYPE));
-        WeaponModel weapon = new WeaponModel(weaponId, ownerId, weaponName, weapontext, atk, dmg, dmgType);
+        if(atk == 0 || dmg == null || dmgType == null) {
+            item = new ItemModel(itemId, ownerId, itemName, itemtext);
+
+        }
+        else {
+            item = new WeaponModel(itemId, ownerId, itemName, itemtext, atk, dmg, dmgType);
+        }
         c.close();
-        return weapon;
+        return item;
     }
 
 
@@ -512,7 +519,7 @@ public class SQLHelper extends SQLiteOpenHelper {
         return db.update(TABLE_CHARACTERS, values, "id=" + character.id, null);
     }
 
-    public long updateWeapon(WeaponModel weapon) {
+    public long updateItem(WeaponModel weapon) {
         checkDB();
         ContentValues values = new ContentValues();
         values.put(ITEM_NAME, weapon.name);
@@ -522,6 +529,15 @@ public class SQLHelper extends SQLiteOpenHelper {
         values.put(WEAPON_TYPE, weapon.dmgType);
 
         return db.update(TABLE_ITEMS, values, "id=" + weapon.id, null);
+    }
+
+    public long updateItem(ItemModel item) {
+        checkDB();
+        ContentValues values = new ContentValues();
+        values.put(ITEM_NAME, item.name);
+        values.put(ITEM_TEXT, item.text);
+
+        return db.update(TABLE_ITEMS, values, "id=" + item.id, null);
     }
 
     private void checkDB() {
