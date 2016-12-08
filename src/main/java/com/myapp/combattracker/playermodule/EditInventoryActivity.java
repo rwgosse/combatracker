@@ -17,6 +17,7 @@ import java.util.List;
 import com.myapp.combattracker.database.SQLHelper;
 import com.myapp.combattracker.models.CharacterModel;
 import com.myapp.combattracker.models.ItemModel;
+import com.myapp.combattracker.models.MyCustomAdapter;
 import com.myapp.combattracker.models.WeaponModel;
 import com.myapp.combattracker.R;
 
@@ -54,19 +55,12 @@ public class EditInventoryActivity extends AppCompatActivity {
             populate(character);
 
         }
-
-
-
-
-
-
-
-
     }
 
     @Override
     public void onResume() {  // After a pause OR at startup
         super.onResume();
+        character = sqlHelper.getCharacter(character.id);
         populate(character);
 
     }
@@ -74,15 +68,16 @@ public class EditInventoryActivity extends AppCompatActivity {
     private void populate(CharacterModel character) {
         inventory = character.getInventory();
 
+         //   ArrayList<String> inventoryList = new ArrayList<String>();
+       // for (ItemModel item : inventory) {
+       //     inventoryList.add(item.toString());
+       // }
+        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+             //   this,
+               // android.R.layout.simple_list_item_1,
+             //   inventoryList);
 
-            List<String> inventoryList = new ArrayList<String>();
-        for (ItemModel item : inventory) {
-            inventoryList.add(item.toString());
-        }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_list_item_1,
-                inventoryList);
+        MyCustomAdapter arrayAdapter = new MyCustomAdapter(inventory, this);
 
         lv.setAdapter(arrayAdapter);
 
@@ -93,7 +88,7 @@ public class EditInventoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
                                     long arg3) {
-                String value = (String) adapter.getItemAtPosition(position);
+                String value = adapter.getItemAtPosition(position).toString();
                 System.out.println("clicked " + position + " value = " + value);
                 try {
                     System.out.println("relates to: " + inventory.get(position));
@@ -135,8 +130,6 @@ public class EditInventoryActivity extends AppCompatActivity {
                 })
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialoginterface, int i) {
-
-
                         Intent myIntent = new Intent(getApplicationContext(), EditItemActivity.class);
                         myIntent.putExtra("character_id", character.id);
 
@@ -144,5 +137,18 @@ public class EditInventoryActivity extends AppCompatActivity {
                         startActivity((myIntent));
                     }
                 }).show();
+    }
+
+    public void new_item_onclick(View view) {
+        Intent myIntent = new Intent(getApplicationContext(), EditItemActivity.class);
+        myIntent.putExtra("character_id", character.id);
+        myIntent.putExtra("notWeapon", 0);
+        startActivity((myIntent));
+    }
+
+    public void new_weapon_onclick(View view) {
+        Intent myIntent = new Intent(getApplicationContext(), EditItemActivity.class);
+        myIntent.putExtra("character_id", character.id);
+        startActivity((myIntent));
     }
 }

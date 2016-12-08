@@ -138,7 +138,7 @@ public class EditCharacterActivity extends AppCompatActivity {
                     int clickedWeaponID = tempWeapon.id;
                     System.out.println("db weapons id = " + clickedWeaponID);
                     Intent myIntent = new Intent(getApplicationContext(), EditItemActivity.class);
-                    myIntent.putExtra("weapon_id", clickedWeaponID);
+                    myIntent.putExtra("item_id", clickedWeaponID);
                     startActivity((myIntent));
                 } catch (IndexOutOfBoundsException e) {
                     if (!isNew && value.equals("none")) {
@@ -426,9 +426,11 @@ public class EditCharacterActivity extends AppCompatActivity {
 
 
     public void click_inventory(View view) {
-        Intent myIntent = new Intent(this, EditInventoryActivity.class);
-        myIntent.putExtra("character_id", character.id);
-        startActivity((myIntent));
+        if (!isNew) {
+            Intent myIntent = new Intent(this, EditInventoryActivity.class);
+            myIntent.putExtra("character_id", character.id);
+            startActivity((myIntent));
+        }
 
     }
 }

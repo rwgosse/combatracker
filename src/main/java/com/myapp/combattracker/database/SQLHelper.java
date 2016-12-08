@@ -24,7 +24,7 @@ import java.util.List;
 public class SQLHelper extends SQLiteOpenHelper {
 
     // Current version of database
-    private static final int DATABASE_VERSION = 29;
+    private static final int DATABASE_VERSION = 30;
     // Characters Table
     private static final String TABLE_CHARACTERS = "characters";
     private static final String CHARACTER_ID = "id";
@@ -311,6 +311,13 @@ public class SQLHelper extends SQLiteOpenHelper {
         }
         c.close();
         return item;
+    }
+
+    public boolean deleteItem(int id) {
+        checkDB();
+            return db.delete(TABLE_ITEMS, ITEM_ID + "=" + id, null) > 0;
+
+
     }
 
 

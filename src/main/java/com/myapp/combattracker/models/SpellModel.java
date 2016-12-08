@@ -5,5 +5,5 @@ package com.myapp.combattracker.models;
  */
 
 public class SpellModel {
-    public String name;
+
 }

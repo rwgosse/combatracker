@@ -13,6 +13,26 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id = "@+id/listView_inventory"/>
+        android:id = "@+id/listView_inventory"
+        android:scrollbars="none"
+        android:layout_height="400sp" />
+
+    <Button
+        android:text="New Item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_new_item"
+        android:layout_below="@+id/listView_inventory"
+        android:onClick="new_item_onclick"/>
+
+    <Button
+        android:text="New Weapon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_new_weapon"
+        android:layout_below="@+id/listView_inventory"
+        android:layout_toRightOf="@id/button_new_item"
+        android:onClick="new_weapon_onclick"/>
+
+
 </RelativeLayout>

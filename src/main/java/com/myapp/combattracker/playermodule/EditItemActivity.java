@@ -44,16 +44,13 @@ public class EditItemActivity extends AppCompatActivity {
         description = (EditText) findViewById(R.id.editTextDescription);
 
 
-            atk = (EditText) findViewById(R.id.editTextAtk);
-            dmg = (EditText) findViewById(R.id.editTextDmg);
-            type = (EditText) findViewById(R.id.editTextType);
+        atk = (EditText) findViewById(R.id.editTextAtk);
+        dmg = (EditText) findViewById(R.id.editTextDmg);
+        type = (EditText) findViewById(R.id.editTextType);
 
         textAtk = (TextView) findViewById(R.id.textViewAtk);
         textDmg = (TextView) findViewById(R.id.textViewDmg);
         textType = (TextView) findViewById(R.id.textViewType);
-
-
-
 
 
         populate();
@@ -67,21 +64,33 @@ public class EditItemActivity extends AppCompatActivity {
             isNew = false;
             loadWeapon();
         } else {
-            newWeapon();
+            if (mIntent.hasExtra("notWeapon")) {
+                isWeapon = false;
+            } else {
+                isWeapon = true;
+            }
+            newItem();
         }
-
 
 
     }
 
-    private void newWeapon() {
+    private void newItem() {
         System.out.println("create Weapon");
         name.setHint("Name");
         description.setHint("Description");
-        if(isWeapon) {
+        if (isWeapon) {
             atk.setText(Integer.toString(0));
             dmg.setText("1d6");
             type.setHint("Damage Type");
+        } else {
+
+            atk.setVisibility(View.GONE);
+            dmg.setVisibility(View.GONE);
+            type.setVisibility(View.GONE);
+            textAtk.setVisibility(View.GONE);
+            textDmg.setVisibility(View.GONE);
+            textType.setVisibility(View.GONE);
         }
 
 
@@ -94,7 +103,7 @@ public class EditItemActivity extends AppCompatActivity {
             isWeapon = true;
         }
         item = gotItem;
-        if(!isWeapon){
+        if (!isWeapon) {
             atk.setVisibility(View.GONE);
             dmg.setVisibility(View.GONE);
             type.setVisibility(View.GONE);
@@ -105,7 +114,7 @@ public class EditItemActivity extends AppCompatActivity {
         System.out.println("got item: " + item);
         name.setText(item.name);
         description.setText(item.text);
-        if(isWeapon) {
+        if (isWeapon) {
             setWeaponFields((WeaponModel) item);
         }
     }
@@ -117,7 +126,7 @@ public class EditItemActivity extends AppCompatActivity {
     }
 
     public void click_cancel(View view) {
-       finish();
+        finish();
     }
 
     public void click_save(View view) {
@@ -127,7 +136,7 @@ public class EditItemActivity extends AppCompatActivity {
         int weaponAtk = -1;
         String weaponDmg = null;
         String weaponType = null;
-        if(isWeapon) {
+        if (isWeapon) {
 
             try {
                 weaponAtk = Integer.parseInt(atk.getText().toString());
@@ -145,24 +154,25 @@ public class EditItemActivity extends AppCompatActivity {
             if (!isNew) {
                 item.name = weaponName;
                 item.text = weaponText;
-                if(isWeapon) {
-                    updateWeaponStats((WeaponModel)item, weaponAtk, weaponDmg, weaponType);
-                    sqlHelper.updateItem((WeaponModel)item);
-                }
-                else {
+                if (isWeapon) {
+                    updateWeaponStats((WeaponModel) item, weaponAtk, weaponDmg, weaponType);
+                    sqlHelper.updateItem((WeaponModel) item);
+                } else {
                     sqlHelper.updateItem(item);
                 }
-            }
-            else {
+            } else {
                 int characterID = 0;
 
-                    characterID = mIntent.getIntExtra("character_id", 0);
+                characterID = mIntent.getIntExtra("character_id", 0);
 
-                WeaponModel newWeapon = new WeaponModel(characterID, weaponName, weaponText, weaponAtk, weaponDmg, weaponType);
-                sqlHelper.addItem(newWeapon);
+                if (isWeapon) {
+                    WeaponModel newWeapon = new WeaponModel(characterID, weaponName, weaponText, weaponAtk, weaponDmg, weaponType);
+                    sqlHelper.addItem(newWeapon);
+                } else {
+                    ItemModel newItem = new ItemModel(characterID, weaponName, weaponText);
+                    sqlHelper.addItem(newItem);
+                }
             }
-
-
 
 
             alertView(true, "Item Saved");
@@ -198,7 +208,6 @@ public class EditItemActivity extends AppCompatActivity {
                     }
                 }).show();
     }
-
 
 
 }
